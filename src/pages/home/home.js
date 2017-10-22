@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { CloudProvider } from "../../providers/cloud/cloud";
+import * as moment from 'moment';
 var HomePage = /** @class */ (function () {
     function HomePage(navCtrl, cloud) {
         var _this = this;
@@ -27,20 +28,23 @@ var HomePage = /** @class */ (function () {
     }
     ;
     HomePage.prototype.getTime = function (date) {
-        var now = new Date().getMilliseconds();
-        var petDate = new Date(date).getMilliseconds();
-        var diff = new Date(now - petDate);
+        var now = moment();
+        var petDate = moment(date);
+        //let now = new Date().getMilliseconds();
+        // let petDate = new Date(date).getMilliseconds();
+        var diffMinutes = now.diff(petDate, 'minutes');
+        var diffHours = now.diff(petDate, 'hours');
         console.log("Now: ", now);
         console.log("PetDate: ", petDate);
-        console.log("Diff: ", diff);
-        if (diff.getMinutes() < 1) {
+        console.log("Diff: ", diffMinutes);
+        if (diffMinutes < 1) {
             return "Now";
         }
-        if (diff.getMinutes() >= 1 && diff.getMinutes() < 60) {
-            return (diff.getMinutes() + " min ago");
+        if (diffMinutes >= 1 && diffMinutes < 60) {
+            return (diffMinutes + "min ago");
         }
-        if (diff.getMinutes() >= 60) {
-            return (diff.getMinutes() + " h ago");
+        if (diffMinutes >= 60) {
+            return (diffHours + "h ago");
         }
     };
     HomePage = __decorate([
