@@ -30,21 +30,34 @@ var HomePage = /** @class */ (function () {
     HomePage.prototype.getTime = function (date) {
         var now = moment();
         var petDate = moment(date);
-        //let now = new Date().getMilliseconds();
-        // let petDate = new Date(date).getMilliseconds();
         var diffMinutes = now.diff(petDate, 'minutes');
         var diffHours = now.diff(petDate, 'hours');
-        console.log("Now: ", now);
-        console.log("PetDate: ", petDate);
-        console.log("Diff: ", diffMinutes);
+        var diffDays = now.diff(petDate, 'days');
+        var diffMonths = now.diff(petDate, 'months');
         if (diffMinutes < 1) {
             return "Now";
         }
         if (diffMinutes >= 1 && diffMinutes < 60) {
-            return (diffMinutes + "min ago");
+            return (diffMinutes + " min ago");
         }
         if (diffMinutes >= 60) {
             return (diffHours + "h ago");
+        }
+        if (diffHours >= 24) {
+            if (diffHours == 1) {
+                return (diffDays + " day ago");
+            }
+            else {
+                return (diffDays + " days ago");
+            }
+        }
+        if (diffDays >= 31) {
+            if (diffDays == 1) {
+                return (diffMonths + " month ago");
+            }
+            else {
+                return (diffMonths + " months ago");
+            }
         }
     };
     HomePage = __decorate([
