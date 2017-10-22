@@ -5,13 +5,85 @@
 </ion-header>
 
 <ion-content padding>
-  <h2>Welcome to Ionic!</h2>
-  <p>
-    This starter project comes with simple tabs-based layout for apps
-    that are going to primarily use a Tabbed UI.
-  </p>
-  <p>
-    Take a look at the <code>src/pages/</code> directory to add or change tabs,
-    update any existing page or create new pages.
-  </p>
+  <div padding>
+    <ion-segment [(ngModel)]="pet">
+      <ion-segment-button value="cats">
+        Cats
+      </ion-segment-button>
+      <ion-segment-button value="dogs">
+        Dogs
+      </ion-segment-button>
+    </ion-segment>
+  </div>
+
+  <div [ngSwitch]="pet">
+    <div *ngSwitchCase="'cats'">
+      <ion-card *ngFor="let catkey of catKeys">
+        <img [src]="cats[catkey].img"/>
+        <ion-card-content>
+          <ion-card-title>
+            {{cats[catkey].name | capitalize}}
+          </ion-card-title>
+          <p>
+            {{cats[catkey].description}}
+          </p>
+          <p><strong>Age: </strong>{{cats[catkey].age}} years old</p>
+          <p><strong>Color: </strong>{{cats[catkey].color}}</p>
+          <p><strong>Sex: </strong>{{cats[catkey].sex}}</p>
+
+        </ion-card-content>
+        <ion-row>
+          <ion-col>
+            <button ion-button icon-left clear small>
+              <ion-icon ios="ios-paw" md="md-paw"></ion-icon>
+              <div>More Info</div>
+            </button>
+          </ion-col>
+
+          <ion-col class="text-align-right">
+            <button ion-button icon-left clear small item-end>
+              <ion-icon ios="ios-time" md="md-time"></ion-icon>
+              <div>{{getTime(cats[catkey].date)}}</div>
+            </button>
+          </ion-col>
+
+        </ion-row>
+      </ion-card>
+    </div>
+
+    <div *ngSwitchCase="'dogs'">
+      <ion-card *ngFor="let dogkey of dogKeys">
+        <img [src]="dogs[dogkey].img"/>
+        <ion-card-content>
+          <ion-card-title>
+            {{dogs[dogkey].name | capitalize}}
+          </ion-card-title>
+          <p>
+            {{dogs[dogkey].description}}
+          </p>
+          <p><strong>Age: </strong>{{dogs[dogkey].age}} years old</p>
+          <p><strong>Color: </strong>{{dogs[dogkey].color}}</p>
+          <p><strong>Sex: </strong>{{dogs[dogkey].sex}}</p>
+        </ion-card-content>
+        <ion-row>
+          <ion-col>
+            <button ion-button icon-left clear small>
+              <ion-icon ios="ios-paw" md="md-paw"></ion-icon>
+              <div>More Info</div>
+            </button>
+          </ion-col>
+
+          <ion-col class="text-align-right">
+            <button ion-button icon-left clear small item-end>
+              <ion-icon ios="ios-time" md="md-time"></ion-icon>
+              <div>{{getTime(dogs[dogkey].date)}}</div>
+            </button>
+          </ion-col>
+
+        </ion-row>
+      </ion-card>
+    </div>
+  </div>
+
+
 </ion-content>
