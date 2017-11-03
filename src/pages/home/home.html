@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-navbar>
+  <ion-navbar color="primary">
     <ion-title>Home</ion-title>
   </ion-navbar>
 </ion-header>
@@ -7,7 +7,7 @@
 <ion-content padding>
   <div padding>
     <ion-segment [(ngModel)]="pet">
-      <ion-segment-button value="cats">
+      <ion-segment-button ng-click="" value="cats">
         Cats
       </ion-segment-button>
       <ion-segment-button value="dogs">
@@ -18,18 +18,18 @@
 
   <div [ngSwitch]="pet">
     <div *ngSwitchCase="'cats'">
-      <ion-card *ngFor="let catkey of catKeys">
-        <img [src]="cats[catkey].img"/>
+      <ion-card *ngFor="let cat of cats">
+        <div (click)="petDetails(cat)" class="img" [style.background-image]="'url(' + cat.img + ')'"></div>
         <ion-card-content>
           <ion-card-title>
-            {{cats[catkey].name | capitalize}}
+            {{cat.name | capitalize}}
           </ion-card-title>
           <p>
-            {{cats[catkey].description}}
+            {{cat.description}}
           </p>
-          <p><strong>Age: </strong>{{cats[catkey].age}} years old</p>
-          <p><strong>Color: </strong>{{cats[catkey].color}}</p>
-          <p><strong>Sex: </strong>{{cats[catkey].sex}}</p>
+          <p><strong>Age: </strong>{{cat.age}} years old</p>
+          <p><strong>Color: </strong>{{cat.color}}</p>
+          <p><strong>Sex: </strong>{{cat.sex}}</p>
 
         </ion-card-content>
         <ion-row>
@@ -43,7 +43,7 @@
           <ion-col class="text-align-right">
             <button ion-button icon-left clear small item-end>
               <ion-icon ios="ios-time" md="md-time"></ion-icon>
-              <div>{{getTime(cats[catkey].date)}}</div>
+              <div>{{getTime(cat.date)}}</div>
             </button>
           </ion-col>
 
@@ -52,18 +52,18 @@
     </div>
 
     <div *ngSwitchCase="'dogs'">
-      <ion-card *ngFor="let dogkey of dogKeys">
-        <img [src]="dogs[dogkey].img"/>
+      <ion-card *ngFor="let dog of dogs">
+        <div (click)="petDetails(dog)" class="img" [style.background-image]="'url(' + dog.img + ')'"></div>
         <ion-card-content>
           <ion-card-title>
-            {{dogs[dogkey].name | capitalize}}
+            {{dog.name | capitalize}}
           </ion-card-title>
           <p>
-            {{dogs[dogkey].description}}
+            {{dog.description}}
           </p>
-          <p><strong>Age: </strong>{{dogs[dogkey].age}} years old</p>
-          <p><strong>Color: </strong>{{dogs[dogkey].color}}</p>
-          <p><strong>Sex: </strong>{{dogs[dogkey].sex}}</p>
+          <p><strong>Age: </strong>{{dog.age}} years old</p>
+          <p><strong>Color: </strong>{{dog.color}}</p>
+          <p><strong>Sex: </strong>{{dog.sex}}</p>
         </ion-card-content>
         <ion-row>
           <ion-col>
@@ -76,7 +76,7 @@
           <ion-col class="text-align-right">
             <button ion-button icon-left clear small item-end>
               <ion-icon ios="ios-time" md="md-time"></ion-icon>
-              <div>{{getTime(dogs[dogkey].date)}}</div>
+              <div>{{getTime(dog.date)}}</div>
             </button>
           </ion-col>
 
@@ -85,5 +85,10 @@
     </div>
   </div>
 
+  <ion-fab right bottom>
+    <button ion-fab color="primary" (click)="addForAdoption()">
+      <ion-icon name="add"></ion-icon>
+    </button>
+  </ion-fab>
 
 </ion-content>

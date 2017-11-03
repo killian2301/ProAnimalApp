@@ -1,0 +1,26 @@
+page-new-for-adoption {
+  .image-div {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    background-color: rgba(0, 0, 0, 0.856);
+
+    .img-background {
+      opacity: 0.5;
+      width: 100%;
+      height: 200px;
+      background-size: cover;
+      background-position: center;
+      background-blend-mode: multiply;
+    }
+
+    .buttons {
+      position: absolute;
+    }
+
+    .camera-button {
+      font-size: 5em;
+      color: white;
+    }
+  }
+}

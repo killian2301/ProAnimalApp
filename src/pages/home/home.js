@@ -8,25 +8,37 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
 import { CloudProvider } from "../../providers/cloud/cloud";
 import * as moment from 'moment';
+import { ModalController } from 'ionic-angular';
+import { NewForAdoptionPage } from "../new-for-adoption/new-for-adoption";
 var HomePage = /** @class */ (function () {
-    function HomePage(navCtrl, cloud) {
-        var _this = this;
-        this.navCtrl = navCtrl;
+    function HomePage(modalCtrl, cloud) {
+        this.modalCtrl = modalCtrl;
         this.cloud = cloud;
         this.pet = 'cats';
-        cloud.getCatsInAdoption().then(function (cats) {
-            _this.cats = cats;
-            _this.catKeys = Object.keys(_this.cats);
+    }
+    ;
+    HomePage.prototype.ionViewWillEnter = function () {
+        var _this = this;
+        return this.getCats().then(function (_) {
+            return _this.getDogs();
         });
-        cloud.getDogsInAdoption().then(function (dogs) {
+    };
+    HomePage.prototype.getDogs = function () {
+        var _this = this;
+        this.cloud.getDogsInAdoption().then(function (dogs) {
             _this.dogs = dogs;
             _this.dogKeys = Object.keys(_this.dogs);
         });
-    }
-    ;
+    };
+    HomePage.prototype.getCats = function () {
+        var _this = this;
+        return this.cloud.getCatsInAdoption().then(function (cats) {
+            _this.cats = cats;
+            _this.catKeys = Object.keys(_this.cats);
+        });
+    };
     HomePage.prototype.getTime = function (date) {
         var now = moment();
         var petDate = moment(date);
@@ -40,11 +52,11 @@ var HomePage = /** @class */ (function () {
         if (diffMinutes >= 1 && diffMinutes < 60) {
             return (diffMinutes + " min ago");
         }
-        if (diffMinutes >= 60) {
+        if (diffMinutes >= 60 && diffHours <= 24) {
             return (diffHours + "h ago");
         }
-        if (diffHours >= 24) {
-            if (diffHours == 1) {
+        if (diffHours >= 24 && diffDays < 31) {
+            if (diffDays == 1) {
                 return (diffDays + " day ago");
             }
             else {
@@ -60,12 +72,16 @@ var HomePage = /** @class */ (function () {
             }
         }
     };
+    HomePage.prototype.addForAdoption = function () {
+        var modal = this.modalCtrl.create(NewForAdoptionPage);
+        modal.present();
+    };
     HomePage = __decorate([
         Component({
             selector: 'page-home',
             templateUrl: 'home.html'
         }),
-        __metadata("design:paramtypes", [NavController, CloudProvider])
+        __metadata("design:paramtypes", [ModalController, CloudProvider])
     ], HomePage);
     return HomePage;
 }());

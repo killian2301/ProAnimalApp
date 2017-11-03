@@ -33,6 +33,23 @@ var CloudProvider = /** @class */ (function () {
             });
         });
     };
+    CloudProvider.prototype.setNewForAdoption = function (animal, category) {
+        return new Promise(function (res, rej) {
+            if (category == 'Cat' || category == 'cat') {
+                var refToCats = firebase.database().ref('animalsInAdoption/cats');
+                res(refToCats.push(animal));
+            }
+            else {
+                if (category == 'Dog' || category == 'dog') {
+                    var refToDogs = firebase.database().ref('animalsInAdoption/dogs');
+                    res(refToDogs.push(animal));
+                }
+                else {
+                    rej(console.log("Not a cat nor dog"));
+                }
+            }
+        });
+    };
     CloudProvider = __decorate([
         Injectable(),
         __metadata("design:paramtypes", [Http, AngularFireDatabase])

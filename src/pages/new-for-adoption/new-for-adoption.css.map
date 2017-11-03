@@ -1,0 +1,7 @@
+{
+"version": 3,
+"mappings": "AAIE,oCAAc;EACZ,SAAS,EAAE,GAAG;EACd,OAAO,EAAE,IAAI;AAGf,kCAAY;EACV,KAAK,EAAE,KAAK;AAEd,qCAAe;EACb,OAAO,EAAE,GAAG;AAEd,8BAAQ;EACN,QAAQ,EAAE,QAAQ;EAClB,UAAU,EAAE,GAAG;EACf,WAAW,EAAE,GAAG",
+"sources": ["new-for-adoption.scss"],
+"names": [],
+"file": "new-for-adoption.css"
+}

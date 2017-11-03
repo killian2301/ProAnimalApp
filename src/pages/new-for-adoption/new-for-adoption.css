@@ -1,0 +1,13 @@
+page-new-for-adoption .camera-button {
+  font-size: 5em;
+  padding: 10px; }
+page-new-for-adoption .float-right {
+  float: right; }
+page-new-for-adoption .img-background {
+  opacity: 0.5; }
+page-new-for-adoption .buttons {
+  position: absolute;
+  margin-top: 15%;
+  margin-left: 15%; }
+
+/*# sourceMappingURL=new-for-adoption.css.map */
