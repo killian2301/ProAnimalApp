@@ -1,0 +1,27 @@
+<ion-content padding>
+  <div class="background-image"></div>
+  <div class="login-content">
+    <div class="container">
+      <img class="logo" src="./assets/imgs/logo.png" alt="Logo">
+      <h1 class="title">Pro Animal App</h1>
+
+      <ion-list inset>
+        <ion-item>
+          <ion-input [(ngModel)]="email" type="email" placeholder="Email"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-input [(ngModel)]="password" type="password" placeholder="************"></ion-input>
+        </ion-item>
+        <br>
+        <div class="login-signin-container">
+            <a>Login</a>
+            <a (click)="createNewAccount()">Create Account</a>
+        </div>
+        <!-- <button ion-button block>Login</button> -->
+      </ion-list>
+      <!-- <h4>or</h4> -->
+      <button color="secondary" ion-button block class="facebook-button" (click)="signInWithFacebook()">Facebook Login</button>
+    </div>
+  </div>
+</ion-content>
+

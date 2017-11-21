@@ -6,17 +6,25 @@
 -->
 <ion-header>
 
-  <ion-navbar>
+  <ion-navbar color="secondary">
     <ion-title>{{pet.name | capitalize}}</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="closeModal()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
-
 </ion-header>
 
 
-<ion-content padding>
+<ion-content padding class="vertical-alignment">
+  <div class="backgroundImage" [style.background-image]="bgImg">
+
+  </div>
 
   <ion-card>
-    <img [src]="pet.img"/>
+    <!-- <img [src]="pet.img" class="pet-image" /> -->
+    <div class="img" [style.background-image]="'url(' + pet.img + ')'"></div>
     <ion-card-content>
       <ion-card-title>
         {{pet.name | capitalize}}
@@ -24,9 +32,13 @@
       <p>
         {{pet.description}}
       </p>
+      <p>
+        <strong>Age: </strong>{{pet.age}} years old</p>
+      <p>
+        <strong>Sex: </strong>{{pet.sex}}</p>
     </ion-card-content>
   </ion-card>
-  <button ion-button (click)="deletePet()" color="danger" block>Delete</button>
-
-
+  <button ion-button *ngIf="pet.ownerId == user.uid" (click)="deletePet()" color="danger" block>Delete</button>
+  <button ion-button *ngIf="pet.ownerId != user.uid && !adopted" (click)="adoptPet(true)" color="primary" block>Adopt me!</button>
+  <button ion-button *ngIf="pet.ownerId != user.uid && adopted" (click)="adoptPet(false)" color="primary" block>I don't want to adopt this pet!</button>
 </ion-content>

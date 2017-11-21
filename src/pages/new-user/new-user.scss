@@ -1,0 +1,52 @@
+page-new-user {
+  *{
+    font-family: 'Comfortaa', cursive;
+  }
+  .image-background{
+    background-image: url("./assets/imgs/cat2.png");
+    background-size: cover;
+    background-position: center;
+    height: 100%;
+    z-index: -1;
+    filter: blur(25px);
+    filter: opacity(50%);
+
+  }
+  .content{
+    background-color: white;
+    filter: opacity(100%)
+
+  }
+  .list{
+    text-align: center;
+    color: #2e2a6e;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 100%;
+  }
+
+  .toolbar-background-ios {
+    background: none;
+  }
+  .header-ios .toolbar-background-ios, .footer-ios .toolbar-background-ios{
+    border-style: none;
+  }
+  @media screen and (max-height: 450px) {
+    .ion-header {
+      border: none;
+    }
+    .yay-text{
+      display: none;
+    }
+
+    .scroll-content{
+      padding-bottom: 16px !important;
+    }
+    .list{
+      margin: 0;
+    }
+  }
+}
+

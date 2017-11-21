@@ -1,87 +1,92 @@
 <ion-header>
-  <ion-navbar color="primary">
+  <ion-navbar color="secondary">
     <ion-title>Home</ion-title>
+    <ion-buttons end>
+      <img *ngIf="user.photoURL" [src]="user.photoURL" alt="profilePhoto" class="profile-photo">
+      <button ion-button (click)="signOut()">Logout</button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-  <div padding>
-    <ion-segment [(ngModel)]="pet">
-      <ion-segment-button ng-click="" value="cats">
-        Cats
-      </ion-segment-button>
-      <ion-segment-button value="dogs">
-        Dogs
-      </ion-segment-button>
-    </ion-segment>
-  </div>
-
-  <div [ngSwitch]="pet">
-    <div *ngSwitchCase="'cats'">
-      <ion-card *ngFor="let cat of cats">
-        <div (click)="petDetails(cat)" class="img" [style.background-image]="'url(' + cat.img + ')'"></div>
-        <ion-card-content>
-          <ion-card-title>
-            {{cat.name | capitalize}}
-          </ion-card-title>
-          <p>
-            {{cat.description}}
-          </p>
-          <p><strong>Age: </strong>{{cat.age}} years old</p>
-          <p><strong>Color: </strong>{{cat.color}}</p>
-          <p><strong>Sex: </strong>{{cat.sex}}</p>
-
-        </ion-card-content>
-        <ion-row>
-          <ion-col>
-            <button ion-button icon-left clear small>
-              <ion-icon ios="ios-paw" md="md-paw"></ion-icon>
-              <div>More Info</div>
-            </button>
-          </ion-col>
-
-          <ion-col class="text-align-right">
-            <button ion-button icon-left clear small item-end>
-              <ion-icon ios="ios-time" md="md-time"></ion-icon>
-              <div>{{getTime(cat.date)}}</div>
-            </button>
-          </ion-col>
-
-        </ion-row>
-      </ion-card>
+  <div class="homeBackground">
+    <div padding>
+      <ion-segment [(ngModel)]="petCategory">
+        <ion-segment-button value="cats">
+          Cats
+        </ion-segment-button>
+        <ion-segment-button value="dogs">
+          Dogs
+        </ion-segment-button>
+      </ion-segment>
     </div>
 
-    <div *ngSwitchCase="'dogs'">
-      <ion-card *ngFor="let dog of dogs">
-        <div (click)="petDetails(dog)" class="img" [style.background-image]="'url(' + dog.img + ')'"></div>
-        <ion-card-content>
-          <ion-card-title>
-            {{dog.name | capitalize}}
-          </ion-card-title>
-          <p>
-            {{dog.description}}
-          </p>
-          <p><strong>Age: </strong>{{dog.age}} years old</p>
-          <p><strong>Color: </strong>{{dog.color}}</p>
-          <p><strong>Sex: </strong>{{dog.sex}}</p>
-        </ion-card-content>
-        <ion-row>
-          <ion-col>
-            <button ion-button icon-left clear small>
-              <ion-icon ios="ios-paw" md="md-paw"></ion-icon>
-              <div>More Info</div>
-            </button>
-          </ion-col>
+    <div [ngSwitch]="petCategory">
+      <div *ngSwitchCase="'cats'">
+        <div *ngIf="numberOfCats == 0" class="noPet">
+          <h1>There are no cats to adopt!</h1>
+        </div>
+        <ion-card *ngFor="let cat of cats">
+          <div class="img" [style.background-image]="'url(' + cat.img + ')'"></div>
+          <ion-card-content>
+            <ion-card-title>
+              {{cat.name | capitalize}}
+            </ion-card-title>
+            <p>
+              {{cat.description}}
+            </p>
+          </ion-card-content>
+          <ion-row>
+            <ion-col>
+              <button (click)="petDetails(cat)" ion-button icon-left clear small>
+                <ion-icon ios="ios-paw" md="md-paw"></ion-icon>
+                <div>More Info</div>
+              </button>
+            </ion-col>
 
-          <ion-col class="text-align-right">
-            <button ion-button icon-left clear small item-end>
-              <ion-icon ios="ios-time" md="md-time"></ion-icon>
-              <div>{{getTime(dog.date)}}</div>
-            </button>
-          </ion-col>
+            <ion-col class="text-align-right">
+              <button ion-button icon-left clear small item-end>
+                <ion-icon ios="ios-time" md="md-time"></ion-icon>
+                <div>{{getTime(cat.date)}}</div>
+              </button>
+            </ion-col>
 
-        </ion-row>
-      </ion-card>
+          </ion-row>
+        </ion-card>
+      </div>
+
+      <div *ngSwitchCase="'dogs'">
+        <div class="noPet" *ngIf="numberOfDogs == 0">
+          <h1>There are no dogs to adopt!</h1>
+        </div>
+        <ion-card *ngFor="let dog of dogs">
+          <div class="img" [style.background-image]="'url(' + dog.img + ')'"></div>
+          <ion-card-content>
+            <ion-card-title>
+              {{dog.name | capitalize}}
+            </ion-card-title>
+            <p>
+              {{dog.description}}
+            </p>
+          </ion-card-content>
+          <ion-row>
+            <ion-col>
+              <button (click)="petDetails(dog)" ion-button icon-left clear small>
+                <ion-icon ios="ios-paw" md="md-paw"></ion-icon>
+                <div>More Info</div>
+              </button>
+            </ion-col>
+
+            <ion-col class="text-align-right">
+              <button ion-button icon-left clear small item-end>
+                <ion-icon ios="ios-time" md="md-time"></ion-icon>
+                <div>{{getTime(dog.date)}}</div>
+              </button>
+            </ion-col>
+
+          </ion-row>
+        </ion-card>
+      </div>
     </div>
   </div>
 
@@ -90,5 +95,4 @@
       <ion-icon name="add"></ion-icon>
     </button>
   </ion-fab>
-
 </ion-content>

@@ -24,7 +24,7 @@
   <ion-card>
     <div class="image-div">
       <!-- <img *ngIf="img == defaultImage" class="img-background" [src]="img"/> -->
-      <div class="img-background" [style.background-image]="img"></div>
+      <div class="img-background" [style.background-image]="sanitizedImage"></div>
       <div *ngIf="showButtons" class="buttons">
         <button ion-button clear (click)="takePhoto()">
           <ion-icon ios="ios-camera" md="md-camera" class="camera-button"></ion-icon>
@@ -32,37 +32,37 @@
         <button ion-button clear (click)="selectImage()">
           <ion-icon ios="ios-add" md="md-add" class="camera-button"></ion-icon>
         </button>
+        <!-- <h2>Add a Photo</h2> -->
       </div>
     </div>
+
     <ion-card-content>
       <ion-card-title>
         <ion-item>
-          <ion-input [(ngModel)]="name" type="text" placeholder="Name"></ion-input>
+            <ion-label>Name: </ion-label>
+          <ion-input [(ngModel)]="name" type="text" ></ion-input>
         </ion-item>
       </ion-card-title>
       <ion-item>
-        <ion-input [(ngModel)]="description" type="text" placeholder="Description"></ion-input>
+          <ion-label>Age: </ion-label>
+        <ion-input [(ngModel)]="age" type="number" max=20 ></ion-input>
       </ion-item>
       <ion-item>
-        <ion-input [(ngModel)]="age" type="number" max=20 placeholder="Age"></ion-input>
+          <ion-label>Description: </ion-label>
+        <ion-textarea [(ngModel)]="description" type="text" ></ion-textarea>
       </ion-item>
-      <ion-item>
-        <!-- <ion-input [(ngModel)]="sex" type="text" placeholder="Sex"></ion-input> -->
-        <ion-label>Sex</ion-label>
-        <ion-select [(ngModel)]="sex">
-          <ion-option value="male">Male</ion-option>
-          <ion-option value="female">Female</ion-option>
-          <ion-option value="idk">I don't know</ion-option>
-        </ion-select>
-      </ion-item>
-      <ion-item>
-        <!-- <ion-input [(ngModel)]="category" type="text" placeholder="Type"></ion-input> -->
-        <ion-label>Type</ion-label>
-        <ion-select [(ngModel)]="category">
-          <ion-option value="dog">Dog</ion-option>
-          <ion-option value="cat">Cat</ion-option>
-        </ion-select>
-      </ion-item>
+
+      <div class="sex">
+        <div (click)="setSex('male')" [ngClass]="{'selected': sex=='male'}" class="sexIcon male">
+          <img src="./assets/imgs/masculine.svg" alt="male">
+          <h4 class=sexText >Male</h4>
+        </div>
+        <div (click)="setSex('female')" [ngClass]="{'selected': sex=='female'}" class="sexIcon female">
+          <img src="./assets/imgs/femenine.svg" alt="female">
+          <h4 class=sexText >Female</h4>
+        </div>
+      </div>
+
     </ion-card-content>
   </ion-card>
 

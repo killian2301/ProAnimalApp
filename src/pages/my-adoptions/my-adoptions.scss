@@ -1,0 +1,31 @@
+page-my-adoptions {
+  .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    text-align: center;
+    flex-wrap: wrap;
+    color: #6d52a2;
+  }
+  h1 {
+    width: 100%;
+  }
+  .title {
+    text-align: center;
+    width: 100vw;
+  }
+  .pet-thumbnail {
+    background-size: cover !important;
+    background-position: center !important;
+    height: 100px;
+  }
+  .paw-icon {
+    font-size: 20em;
+    opacity: 0.1;
+    position: absolute;
+    margin: auto;
+    left: 0;
+    right: 0;
+  }
+}

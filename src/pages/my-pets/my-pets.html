@@ -1,0 +1,42 @@
+<!--
+  Generated template for the MyPetsPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar color="primary">
+    <ion-title>My Pets</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+  <div class="container">
+    <ion-icon class="paw-icon" ios="ios-paw" md="md-paw"></ion-icon>
+    <ion-grid>
+      <ion-row wrap>
+        <div *ngIf="numberOfPets == 0" class="text">
+          <h1>You have no pets in adoption.</h1>
+        </div>
+        <!-- <div class="title">
+          <h1>My pets in adoption</h1>
+        </div> -->
+        <ion-col *ngFor="let pet of myPets">
+          <ion-card *ngIf="myPets.length > 0">
+            <ion-card-header>
+              {{pet.name}}
+            </ion-card-header>
+            <ion-card-content (click)="petDetails(pet)">
+              <div class="pet-thumbnail" [style.background]="'url(' + pet.img + ')' | sanitizer:'style'"></div>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+
+</ion-content>

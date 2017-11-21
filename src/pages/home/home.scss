@@ -2,11 +2,34 @@ page-home {
   .text-align-right{
     text-align: right;
   }
-
+  .noPet{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 400px;
+    text-align: center;
+  }
+  h1 {
+    color: #2E2A6E;
+  }
   .img{
     height: 250px;
     width: 100%;
     background-size: cover;
     background-position: center;
+  }
+  .scroll-content{
+    background-image: url("../../assets/imgs/cat-and-dog-5.png");
+    background-size: cover;
+    position: absolute;
+    top:0;
+    left:0;
+  }
+  .profile-photo{
+    border-radius: 50px;
+    width: 25px;
+    margin-top: 5px;
+    margin-left: -30px;
+    position: absolute;
   }
 }

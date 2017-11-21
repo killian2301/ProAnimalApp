@@ -1,0 +1,90 @@
+page-login {
+  * {
+    box-sizing: border-box;
+  }
+
+  .item {
+    border-radius: 25px;
+    margin-bottom: 10px;
+    text-align: center;
+    background: none;
+    box-shadow: none;
+  }
+
+  .text-input::-webkit-input-placeholder {
+    text-align: center !important;
+    color: #2e2a6e;
+  }
+
+  .list-ios[inset] .item{
+    border: 0.5px solid #2e2a6e;
+  }
+  .list-ios[inset] > .item:first-child, .list-ios[inset] > .item-wrapper:first-child .item{
+    border: 0.5px solid #2e2a6e;
+  }
+  .background-image {
+    background-image: url("../../assets/imgs/cat-and-dog-5.png");
+    background-size: cover;
+    background-position: center;
+    height: 100%;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    position: absolute;
+  }
+
+
+  .login-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-evenly;
+      height: 100%;
+      width: 100%;
+      h1,
+      h4,
+      a {
+        color: #2e2a6e;
+      }
+      input:focus::-webkit-input-placeholder { color:transparent; }
+      .text-input{
+        text-align: center;
+        color: #2e2a6e;
+      }
+      .logo {
+        max-width: 55%;
+        z-index: 4;
+      }
+      .title {
+        font-size: 2.5em;
+        color: #2e2a6e;
+        margin-bottom: 10%;
+        font-family: 'Comfortaa', cursive;
+
+      }
+      .login-signin-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+      }
+      .facebook-button{
+        align-self: flex-end;
+      }
+      @media screen and (max-height: 450px) {
+        .logo {
+          display: none;
+        }
+        .title {
+          display: none;
+        }
+      }
+    }
+  }
+}

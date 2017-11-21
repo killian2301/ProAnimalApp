@@ -4,16 +4,17 @@ import { CloudProvider } from "../../providers/cloud/cloud";
 import { Camera, CameraOptions } from "@ionic-native/camera";
 import { ImagePicker } from "@ionic-native/image-picker";
 import { ToastController } from "ionic-angular/components/toast/toast-controller";
-import { DomSanitizer } from "@angular/platform-browser";
-import { Cloudinary } from "cloudinary-core";
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { AngularFireAuth } from "angularfire2/auth";
+import { SpinnerDialog } from "@ionic-native/spinner-dialog";
 
-@IonicPage()
 @Component({
   selector: "page-new-for-adoption",
   templateUrl: "new-for-adoption.html"
 })
 export class NewForAdoptionPage {
   img: any;
+  sanitizedImage: any;
   name: string;
   age: string;
   sex: string;
@@ -21,69 +22,141 @@ export class NewForAdoptionPage {
   description: string;
   date: number;
   showButtons: boolean;
-  baseImage: any;
-  defaultImage = "https://www.cesarsway.com/sites/newcesarsway/files/styles/large_article_preview/public/How%20to%20calm%20a%20hyper%20dog.jpg?itok=Vg7ueySi";
+  isDefaultImage: boolean;
+  dogImage = "./assets/imgs/dog.jpg";
+  catImage = "./assets/imgs/cat.jpg";
 
   constructor(
     public navCtrl: NavController,
-    private imagePicker: ImagePicker,
-    private camera: Camera,
+    public camera: Camera,
     public navParams: NavParams,
     public toastCtr: ToastController,
     public cloud: CloudProvider,
-    public sanitizer: DomSanitizer
+    public sanitizer: DomSanitizer,
+    public afAuth: AngularFireAuth,
+    public spinnerDialog: SpinnerDialog
   ) {
+    this.category = this.navParams.get("category");
     this.showButtons = true;
-    this.img = `url(${this.defaultImage})`;
-    //this.img = sanitizer.bypassSecurityTrustStyle(`url(${this.defaultImage})`);
+    if (this.category == "dogs") {
+      this.sanitizedImage = `url(${this.dogImage})`;
+    } else {
+      this.sanitizedImage = `url(${this.catImage})`;
+    }
+    this.isDefaultImage = true;
+
+    this.name = "Prueba";
+    this.age = "3";
+    this.sex = "male";
+    this.description = "dasefasfgas";
+    this.img = "http://lorempixel.com/200/200/";
   }
 
   closeModal() {
+    this.spinnerDialog.hide();
     return this.navCtrl.pop();
   }
 
   finish() {
-    return this.cloud.uploadPicture(this.baseImage).then(imgUrl => {
-      let animal = {
-        name: this.name,
-        age: this.age,
-        sex: this.sex,
-        date: Date.now(),
-        description: this.description,
-        img: imgUrl
-      };
-      return this.cloud
-        .setNewForAdoption(animal, this.category)
-        .then(result => {
-          this.presentToast("Succesfully Posted");
-          return this.closeModal();
-        });
-    });
+    this.spinnerDialog.show();
+
+    let animal = {
+          ownerId: this.afAuth.auth.currentUser.uid,
+          name: this.name,
+          age: this.age,
+          sex: this.sex,
+          category: this.category,
+          date: Date.now(),
+          description: this.description,
+          img: "http://lorempixel.com/200/200/"
+        };
+    return this.cloud
+      .setNewForAdoption(animal, this.category)
+      .then(result => {
+        this.presentToast("Succesfully Posted");
+        return this.closeModal();
+      })
+      .then(_ => {
+        return this.cloud.createOwner(animal);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+
+    // return this.cloud.uploadPicture(this.img).then(imgUrl => {
+    //   let animal = {
+    //     ownerId: this.afAuth.auth.currentUser.uid,
+    //     name: this.name,
+    //     age: this.age,
+    //     sex: this.sex,
+    //     date: Date.now(),
+    //     description: this.description,
+    //     img: imgUrl
+    //   };
+    //   return this.cloud
+    //     .setNewForAdoption(animal, this.category)
+    //     .then(result => {
+    //       this.presentToast("Succesfully Posted");
+    //       return this.closeModal();
+    //     }).then(_ => {
+    //       return this.cloud.createOwner(animal);
+    //     })
+    //     .catch(err => {
+    //       console.log(err);
+    //     });
+    // });
   }
 
   takePhoto() {
-
     var options: CameraOptions = {
-      // quality: 100,
-      destinationType: this.camera.DestinationType.DATA_URL,
-      // sourceType: this.camera.PictureSourceType.CAMERA,
-      // encodingType: this.camera.EncodingType.JPEG,
-      targetWidth: 480,
-      correctOrientation: true,
-      saveToPhotoAlbum: false
+      destinationType: this.camera.DestinationType.FILE_URI,
+      sourceType: this.camera.PictureSourceType.CAMERA,
+      saveToPhotoAlbum: true,
+      correctOrientation: true
     };
 
     return this.camera.getPicture(options).then(
-      imageData => {
-        this.baseImage = 'data:image/jpeg;base64,' + imageData;
-        this.img = this.sanitizer.bypassSecurityTrustStyle(`url(${imageData})`);
+      imageUrl => {
+        console.log("IMG URL: ", imageUrl);
+        // this.img = this.sanitizer.bypassSecurityTrustStyle(`url(${imageUrl})`);
+        this.img = "file:///" + imageUrl;
         this.showButtons = false;
+        this.isDefaultImage = false;
         return true;
       },
       err => {
-        this.presentToast("ERROR: "+ err);
+        this.presentToast(err);
       }
     );
+  }
+
+  selectImage() {
+    var options: CameraOptions = {
+      destinationType: this.camera.DestinationType.FILE_URI,
+      mediaType: this.camera.MediaType.PICTURE,
+      targetWidth: 480,
+      sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
+      saveToPhotoAlbum: false,
+      correctOrientation: true
+    };
+
+    return (this.img = "http://lorempixel.com/200/200/");
+    // return this.camera.getPicture(options).then(
+    //   imageUrl => {
+    //     console.log("IMG URL: ", imageUrl);
+    //     this.img = imageUrl;
+    //     this.sanitizedImage = imageUrl;
+    //     // this.sanitizedImage = this.sanitizer.bypassSecurityTrustStyle(
+    //     //   `url(file://${encodeURI(imageUrl)})`
+    //     // );
+    //     this.showButtons = false;
+    //     this.isDefaultImage = false;
+    //     return true;
+    //   },
+    //   err => {
+    //     this.presentToast(err);
+    //   }
+    // );
   }
 
   presentToast(message) {
@@ -94,27 +167,15 @@ export class NewForAdoptionPage {
     toast.present();
   }
 
-  selectImage() {
-    const options = { maximumImagesCount: 1, outputType: 1 };
-
-    return this.imagePicker.getPictures(options).then(
-      results => {
-        this.baseImage = 'data:image/jpeg;base64,' + results[0];
-        this.img = this.sanitizer.bypassSecurityTrustStyle(
-          `url(${results[0]})`
-        );
-        this.showButtons = false;
-        return true;
-      },
-      err => {
-        this.presentToast("ERROR: "+ err);
-      }
+  completedForm() {
+    return (
+      this.name && this.age && this.description && this.sex
+      // &&
+      // !this.isDefaultImage
     );
   }
 
-  completedForm() {
-    return (
-      this.name && this.age && this.category && this.description && this.sex
-    );
+  setSex(sex) {
+    this.sex = sex;
   }
 }

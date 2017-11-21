@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "123565811630",
+    "firebase_url": "https://proanimalapp.firebaseio.com",
+    "project_id": "proanimalapp",
+    "storage_bucket": "proanimalapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:123565811630:android:8de10f818ec97730",
+        "android_client_info": {
+          "package_name": "com.proanimalapp.com"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "123565811630-0dsmf0d8ra4nuonodteebq337mhodkut.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCYqaT2oAcNy9OmxeRi2Y29aKU4YqMN5tM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
