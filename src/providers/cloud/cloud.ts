@@ -8,7 +8,7 @@ import {
   FileUploadOptions,
   FileTransferObject
 } from "@ionic-native/file-transfer";
-import { File } from "@ionic-native/file";
+// import { File } from "@ionic-native/file";
 import * as firebase from "firebase";
 import { Cloudinary } from "@cloudinary/angular-4.x";
 import { Observable } from "rxjs/Observable";
@@ -22,7 +22,7 @@ export class CloudProvider {
     public http: Http,
     public db: AngularFireDatabase,
     private transfer: FileTransfer,
-    private file: File,
+    // private file: File,
     private cloudinary: Cloudinary
   ) {}
 
@@ -31,25 +31,24 @@ export class CloudProvider {
   }
 
   adoptPet(pet, userId) {
-    return new Promise((res, rej) => {
-      const refToWantedPets = firebase
-        .database()
-        .ref(`users/${userId}/wantedPets/${pet.petKey}`);
-      res(refToWantedPets.set(pet));
-    });
+    return firebase
+      .database()
+      .ref(`users/${userId}/wantedPets/${pet.petKey}`)
+      .set(pet);
   }
 
   deleteAdoptPet(pet, userId) {
-    return new Promise((res, rej) => {
-      const refToWantedPets = firebase
-        .database()
-        .ref(`users/${userId}/wantedPets/${pet.petKey}`);
-      res(refToWantedPets.remove());
-    });
+    return firebase
+      .database()
+      .ref(`users/${userId}/wantedPets/${pet.petKey}`)
+      .remove();
   }
 
-  sendTokenToFirebase(token, userId){
-    return firebase.database().ref(`/users/${userId}/`).set({token: token});
+  sendTokenToFirebase(token, userId) {
+    return firebase
+      .database()
+      .ref(`/users/${userId}/`)
+      .set({ token: token });
   }
 
   getCatsInAdoption() {
@@ -65,25 +64,23 @@ export class CloudProvider {
 
   getWantedPets(userId) {
     var keys = [];
-    const refToWantedPets = firebase
+    firebase
       .database()
-      .ref(`users/${userId}/wantedPets`);
-    refToWantedPets.once("value", snapshot => {
-      snapshot.forEach(pet => {
-        keys.push(pet.key);
-        return true;
+      .ref(`users/${userId}/wantedPets`)
+      .once("value", snapshot => {
+        snapshot.forEach(pet => {
+          keys.push(pet.key);
+          return true;
+        });
       });
-    });
     return keys;
   }
 
   createOwner(pet) {
-    return new Promise((res, rej) => {
-      const refToUsers = firebase.database().ref(`users`);
-      const petKey = pet.petKey;
-      const ownerKey = pet.ownerId;
-      res(refToUsers.child(`${ownerKey}/petsInAdoption/${petKey}`).set(pet));
-    });
+    const refToUsers = firebase.database().ref(`users`);
+    const petKey = pet.petKey;
+    const ownerKey = pet.ownerId;
+    return refToUsers.child(`${ownerKey}/petsInAdoption/${petKey}`).set(pet);
   }
 
   getDogsInAdoption() {
@@ -94,33 +91,27 @@ export class CloudProvider {
   }
 
   setNewForAdoption(animal, category) {
-    return new Promise((res, rej) => {
-      const refToPet = firebase.database().ref(`petsInAdoption/${category}`);
-      const petKey = refToPet.push().key;
-      animal.petKey = petKey;
-      res(refToPet.child(`${petKey}`).set(animal));
-    });
+    const refToPet = firebase.database().ref(`petsInAdoption/${category}`);
+    const petKey = refToPet.push().key;
+    animal.petKey = petKey;
+    return refToPet.child(`${petKey}`).set(animal);
   }
 
   deletePet(pet) {
     const petKey = pet.petKey;
     const ownerKey = pet.ownerId;
-    return new Promise((res, rej) => {
-      res(
+    return firebase
+      .database()
+      .ref(`petsInAdoption/${pet.category}/${petKey}`)
+      .remove()
+      .then(_ => {
         firebase
           .database()
-          .ref(`petsInAdoption/${pet.category}/${petKey}`)
+          .ref(`users/${ownerKey}/petsInAdoption/${petKey}`)
           .remove()
-          .then(_ => {
-            firebase
-              .database()
-              .ref(`users/${ownerKey}/petsInAdoption/${petKey}`)
-              .remove()
-              .catch(err => rej(console.log(err)));
-          })
-          .catch(err => rej(console.log(err)))
-      );
-    });
+          .catch(err => console.log(err));
+      })
+      .catch(err => console.log(err));
   }
 
   uploadPicture(image) {

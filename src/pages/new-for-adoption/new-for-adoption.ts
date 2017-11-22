@@ -2,7 +2,6 @@ import { Component } from "@angular/core";
 import { IonicPage, NavController, NavParams } from "ionic-angular";
 import { CloudProvider } from "../../providers/cloud/cloud";
 import { Camera, CameraOptions } from "@ionic-native/camera";
-import { ImagePicker } from "@ionic-native/image-picker";
 import { ToastController } from "ionic-angular/components/toast/toast-controller";
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { AngularFireAuth } from "angularfire2/auth";

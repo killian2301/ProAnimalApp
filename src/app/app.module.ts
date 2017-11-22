@@ -19,21 +19,19 @@ import { HttpModule } from "@angular/http";
 
 //PIPES
 import { CapitalizePipe } from "../pipes/capitalize/capitalize";
-import { NewForAdoptionPage } from "../pages/new-for-adoption/new-for-adoption";
-import { Camera } from "@ionic-native/camera";
-import { ImagePicker } from "@ionic-native/image-picker";
-import { PetDetailsPage } from "../pages/pet-details/pet-details";
+import { SanitizerPipe } from "../pipes/sanitizer/sanitizer";
 
 //SERVICES
+import { Camera } from "@ionic-native/camera";
 import { CloudinaryModule } from "@cloudinary/angular-4.x";
 import * as Cloudinary from "cloudinary-core";
-import { File } from "@ionic-native/file";
 import { FileTransfer } from "@ionic-native/file-transfer";
-import { SanitizerPipe } from "../pipes/sanitizer/sanitizer";
 import { SpinnerDialog } from '@ionic-native/spinner-dialog';
 import { Facebook } from "@ionic-native/facebook";
 
 //PAGES
+import { NewForAdoptionPage } from "../pages/new-for-adoption/new-for-adoption";
+import { PetDetailsPage } from "../pages/pet-details/pet-details";
 import { HomePage } from "../pages/home/home";
 import { TabsPage } from "../pages/tabs/tabs";
 import { LoginPage } from "../pages/login/login";
@@ -99,8 +97,6 @@ const firebaseConfig = {
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     CloudProvider,
     Camera,
-    ImagePicker,
-    File,
     FileTransfer,
     SpinnerDialog,
     Facebook
