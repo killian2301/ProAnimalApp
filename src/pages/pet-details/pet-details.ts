@@ -21,7 +21,7 @@ export class PetDetailsPage {
   adopted: boolean;
   user: any;
   bgImg: any;
-
+  wantedByUsers: Array<any> = [];
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -34,7 +34,9 @@ export class PetDetailsPage {
     this.pet.category = navParams.get("category");
     this.bgImg = `url(${this.pet.img})`;
     this.user = this.afAuth.auth.currentUser;
-    this.checkIfIWantThisPet();
+    if (this.pet.ownerId != this.user.uid) {
+      this.checkIfIWantThisPet();
+    }
   }
 
   deletePet() {
@@ -61,14 +63,20 @@ export class PetDetailsPage {
     toast.present();
   }
 
-  checkIfIWantThisPet(){
+  checkIfIWantThisPet() {
+    return this.cloud.getWantedBy(this.pet).then(wantedBy => {
+      console.log(wantedBy);
+      return this.adopted = wantedBy.includes(this.user.uid) ? true : false;
+    });
+  }
+
+  checkIfIWantThisPet2() {
     var wantedPets = [];
     wantedPets = this.cloud.getWantedPets(this.afAuth.auth.currentUser.uid);
     console.log(wantedPets);
-    if(wantedPets.includes(this.pet.petKey)){
+    if (wantedPets.includes(this.pet.petKey)) {
       this.adopted = true;
-    }
-    else{
+    } else {
       this.adopted = false;
     }
   }

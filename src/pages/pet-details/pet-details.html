@@ -1,9 +1,3 @@
-<!--
-  Generated template for the PetDetailsPage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
 
   <ion-navbar color="secondary">
@@ -38,7 +32,19 @@
         <strong>Sex: </strong>{{pet.profile.sex}}</p>
     </ion-card-content>
   </ion-card>
-  <button ion-button *ngIf="pet.ownerId == user.uid" (click)="deletePet()" color="danger" block>Delete</button>
-  <button ion-button *ngIf="pet.ownerId != user.uid && !adopted" (click)="adoptPet(true)" color="primary" block>Adopt me!</button>
-  <button ion-button *ngIf="pet.ownerId != user.uid && adopted" (click)="adoptPet(false)" color="primary" block>I don't want to adopt this pet!</button>
+  <div *ngIf="pet.ownerId == user.uid" class="owner">
+    <div class="wanted-by">
+      <ion-card>
+        <ion-card-title>These users are interested: </ion-card-title>
+        <ion-card-content *ngFor="let user of wantedByUsers">
+          {{user.name}}
+        </ion-card-content>
+      </ion-card>
+    </div>
+    <button ion-button (click)="deletePet()" color="danger" block>Remove from adoption</button>
+  </div>
+  <div *ngIf="pet.ownerId != user.uid" class="not-owner">
+    <button ion-button *ngIf="pet.ownerId != user.uid && !adopted" (click)="adoptPet(true)" color="primary" block>Adopt me!</button>
+    <button ion-button *ngIf="pet.ownerId != user.uid && adopted" (click)="adoptPet(false)" color="primary" block>I don't want to adopt this pet!</button>
+  </div>
 </ion-content>

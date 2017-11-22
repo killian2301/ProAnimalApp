@@ -20,7 +20,7 @@ export class CloudProvider {
   constructor(
     public http: Http,
     public db: AngularFireDatabase,
-    private transfer: FileTransfer,
+    private transfer: FileTransfer
   ) {}
 
   getMyPets(userId) {
@@ -66,6 +66,16 @@ export class CloudProvider {
     return this.db.list(`users/${userId}/wantedPets`).valueChanges();
   }
 
+  getWantedBy(pet) {
+    return firebase
+      .database()
+      .ref(`petsInAdoption/${pet.profile.category}/${pet.petKey}/wantedBy`)
+      .once("value")
+      .then(wantedBy => {
+        return wantedBy.val();
+      });
+  }
+
   getWantedPets(userId) {
     var keys = [];
     firebase
@@ -80,10 +90,6 @@ export class CloudProvider {
     return keys;
   }
 
-  createOwner(pet) {
-
-  }
-
   getDogsInAdoption() {
     return this.db
       .list("petsInAdoption/dogs")
@@ -93,12 +99,21 @@ export class CloudProvider {
 
   setNewForAdoption(pet) {
     const ownerKey = pet.ownerId;
-    pet.petKey = firebase.database().ref(`users/${ownerKey}/petsInAdoption`).push().key;
-    return firebase.database().ref(`users/${ownerKey}/token`).once('value').then(token => {
-      pet.ownerToken = token.val();
-      return firebase.database().ref(`users/${ownerKey}/petsInAdoption/${pet.petKey}`).set(pet);
-
-    })
+    pet.petKey = firebase
+      .database()
+      .ref(`users/${ownerKey}/petsInAdoption`)
+      .push().key;
+    return firebase
+      .database()
+      .ref(`users/${ownerKey}/token`)
+      .once("value")
+      .then(token => {
+        pet.ownerToken = token.val();
+        return firebase
+          .database()
+          .ref(`users/${ownerKey}/petsInAdoption/${pet.petKey}`)
+          .set(pet);
+      });
   }
 
   deletePet(pet) {
@@ -131,6 +146,5 @@ export class CloudProvider {
           console.log(err);
         }
       );
-
   }
 }

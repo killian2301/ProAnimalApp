@@ -10,6 +10,7 @@ import { NewUserPage } from "../new-user/new-user";
 import { ModalController } from "ionic-angular/components/modal/modal-controller";
 import { FCM } from "@ionic-native/fcm";
 import { CloudProvider } from "../../providers/cloud/cloud";
+import { ToastController } from "ionic-angular/components/toast/toast-controller";
 
 @Component({
   selector: "page-login",
@@ -17,6 +18,8 @@ import { CloudProvider } from "../../providers/cloud/cloud";
 })
 export class LoginPage {
   displayName: string;
+  email: string = "";
+  password: string = "";
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -26,7 +29,8 @@ export class LoginPage {
     private fb: Facebook,
     private platform: Platform,
     private fcm: FCM,
-    private cloud: CloudProvider
+    private cloud: CloudProvider,
+    private toast: ToastController
   ) {
     afAuth.authState.subscribe(user => {
       if (!user) {
@@ -82,6 +86,23 @@ export class LoginPage {
     this.modalCtrl.create(NewUserPage).present();
   }
 
+  login() {
+    this.spinnerDialog.show();
+    this.afAuth.auth
+      .signInWithEmailAndPassword(this.email, this.password).catch(err => this.showToast(err))
+      .then(_ => {
+        this.spinnerDialog.hide();
+      });
+  }
+  showToast(message) {
+    return this.toast
+      .create({
+        message: message,
+        duration: 3000,
+        position: "bottom"
+      })
+      .present();
+  }
   signOut() {
     this.afAuth.auth.signOut();
   }
