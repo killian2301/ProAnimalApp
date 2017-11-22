@@ -1,35 +1,77 @@
-const functions = require('firebase-functions');
-const admin = require('firebase-admin');
+const functions = require("firebase-functions");
+const admin = require("firebase-admin");
 admin.initializeApp(functions.config().firebase);
 
+exports.removePet = functions.database
+  .ref("/users/{userId}/petsInAdoption/{petId}")
+  .onDelete(petData => {
+    const pet = petData.data.previous.val();
+    console.log("pet:", pet);
 
-exports.createPendingUser = functions.database
-  .ref("/clients/{userId}")
-  .onCreate(pendingUserData => {
-    const pendingUser = pendingUserData.data.val();
-    const userId = pendingUserData.params.userId;
-    const trainerId = pendingUser.trainerId;
-    const userName = pendingUser.profile.name;
+    const userId = petData.params.userId;
+    const petId = petData.params.petId;
+    const petCategory = pet.profile.category;
 
     return admin
       .database()
-      .ref(`trainers/${trainerId}`)
-      .once("value")
-      .then(trainerData => {
-        const trainerToken = trainerData.val().token;
+      .ref(`petsInAdoption/${petCategory}/${petId}`)
+      .remove();
+  });
+
+exports.createPetInAdoption = functions.database
+  .ref("/users/{userId}/petsInAdoption/{petId}")
+  .onCreate(petData => {
+    const pet = petData.data.val();
+    console.log(pet);
+    const userId = petData.params.userId;
+    const petId = petData.params.petId;
+    const petCategory = pet.profile.category;
+
+    return admin
+      .database()
+      .ref(`petsInAdoption/${petCategory}/${petId}`)
+      .set(pet);
+  });
+
+exports.wantedPet = functions.database
+  .ref("/users/{userId}/wantedPets/{petId}")
+  .onCreate(wantedPetData => {
+    const pet = wantedPetData.data.val();
+    console.log(pet);
+    const userId = wantedPetData.params.userId;
+    const petId = wantedPetData.params.petId;
+    const petCategory = pet.profile.category;
+    const ownerToken = pet.ownerToken;
+    return admin
+      .database()
+      .ref(`petsInAdoption/${petCategory}/${petId}/wantedBy/${userId}`)
+      .set(ownerToken)
+      .then(_ => {
         const payload = {
           notification: {
-            title: `${userName} just made a request!`,
-            body: "Tap here to aprove or reject!",
+            title: `Somebody wants to adopt ${pet.profile.name}!`,
+            body: "Tap here to see more",
             sound: "default"
           }
         };
-        return admin.messaging().sendToDevice(trainerToken, payload);
-      })
-      .then(_ => {
-        return admin
-          .database()
-          .ref(`trainers/${trainerId}/clients/pending/${userId}`)
-          .set(pendingUser);
+        return admin.messaging().sendToDevice(ownerToken, payload).then(success => {
+          console.log("se ha enviado la push a token:", ownerToken);
+          console.log(success);
+        });
       });
+  });
+
+exports.deleteWantedPet = functions.database
+  .ref("/users/{userId}/wantedPets/{petId}")
+  .onDelete(wantedPetData => {
+    const pet = wantedPetData.data.previous.val();
+    console.log(pet);
+    const userId = wantedPetData.params.userId;
+    const petId = wantedPetData.params.petId;
+    const petCategory = pet.profile.category;
+
+    return admin
+      .database()
+      .ref(`petsInAdoption/${petCategory}/${petId}/wantedBy/${userId}`)
+      .remove();
   });

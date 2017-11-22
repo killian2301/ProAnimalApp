@@ -12,7 +12,6 @@ import { PetDetailsPage } from '../pet-details/pet-details';
  * Ionic pages and navigation.
  */
 
-@IonicPage()
 @Component({
   selector: 'page-my-pets',
   templateUrl: 'my-pets.html',

@@ -27,13 +27,13 @@
           <h1>There are no cats to adopt!</h1>
         </div>
         <ion-card *ngFor="let cat of cats">
-          <div class="img" [style.background-image]="'url(' + cat.img + ')'"></div>
+          <div class="img" [style.background-image]="'url(' + cat.profile.img + ')'"></div>
           <ion-card-content>
             <ion-card-title>
-              {{cat.name | capitalize}}
+              {{cat.profile.name | capitalize}}
             </ion-card-title>
             <p>
-              {{cat.description}}
+              {{cat.profile.description}}
             </p>
           </ion-card-content>
           <ion-row>
@@ -60,13 +60,13 @@
           <h1>There are no dogs to adopt!</h1>
         </div>
         <ion-card *ngFor="let dog of dogs">
-          <div class="img" [style.background-image]="'url(' + dog.img + ')'"></div>
+          <div class="img" [style.background-image]="'url(' + dog.profile.img + ')'"></div>
           <ion-card-content>
             <ion-card-title>
-              {{dog.name | capitalize}}
+              {{dog.profile.name | capitalize}}
             </ion-card-title>
             <p>
-              {{dog.description}}
+              {{dog.profile.description}}
             </p>
           </ion-card-content>
           <ion-row>

@@ -7,7 +7,7 @@
 <ion-header>
 
   <ion-navbar color="secondary">
-    <ion-title>{{pet.name | capitalize}}</ion-title>
+    <ion-title>{{pet.profile.name | capitalize}}</ion-title>
     <ion-buttons end>
       <button ion-button icon-only (click)="closeModal()">
         <ion-icon name="close"></ion-icon>
@@ -27,15 +27,15 @@
     <div class="img" [style.background-image]="'url(' + pet.img + ')'"></div>
     <ion-card-content>
       <ion-card-title>
-        {{pet.name | capitalize}}
+        {{pet.profile.name | capitalize}}
       </ion-card-title>
       <p>
-        {{pet.description}}
+        {{pet.profile.description}}
       </p>
       <p>
-        <strong>Age: </strong>{{pet.age}} years old</p>
+        <strong>Age: </strong>{{pet.profile.age}} years old</p>
       <p>
-        <strong>Sex: </strong>{{pet.sex}}</p>
+        <strong>Sex: </strong>{{pet.profile.sex}}</p>
     </ion-card-content>
   </ion-card>
   <button ion-button *ngIf="pet.ownerId == user.uid" (click)="deletePet()" color="danger" block>Delete</button>

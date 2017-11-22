@@ -3,7 +3,7 @@ import { IonicPage, NavController, NavParams } from "ionic-angular";
 import { CloudProvider } from "../../providers/cloud/cloud";
 import { Camera, CameraOptions } from "@ionic-native/camera";
 import { ToastController } from "ionic-angular/components/toast/toast-controller";
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { DomSanitizer, SafeResourceUrl } from "@angular/platform-browser";
 import { AngularFireAuth } from "angularfire2/auth";
 import { SpinnerDialog } from "@ionic-native/spinner-dialog";
 
@@ -60,50 +60,28 @@ export class NewForAdoptionPage {
     this.spinnerDialog.show();
 
     let animal = {
-          ownerId: this.afAuth.auth.currentUser.uid,
-          name: this.name,
-          age: this.age,
-          sex: this.sex,
-          category: this.category,
-          date: Date.now(),
-          description: this.description,
-          img: "http://lorempixel.com/200/200/"
-        };
+      profile: {
+        name: this.name,
+        age: this.age,
+        sex: this.sex,
+        category: this.category,
+        description: this.description,
+        img: "http://lorempixel.com/200/200/"
+      },
+      ownerId: this.afAuth.auth.currentUser.uid,
+      ownerToken: '',
+      date: Date.now(),
+      wanted: []
+    };
     return this.cloud
-      .setNewForAdoption(animal, this.category)
+      .setNewForAdoption(animal)
       .then(result => {
         this.presentToast("Succesfully Posted");
         return this.closeModal();
       })
-      .then(_ => {
-        return this.cloud.createOwner(animal);
-      })
       .catch(err => {
         console.log(err);
       });
-
-    // return this.cloud.uploadPicture(this.img).then(imgUrl => {
-    //   let animal = {
-    //     ownerId: this.afAuth.auth.currentUser.uid,
-    //     name: this.name,
-    //     age: this.age,
-    //     sex: this.sex,
-    //     date: Date.now(),
-    //     description: this.description,
-    //     img: imgUrl
-    //   };
-    //   return this.cloud
-    //     .setNewForAdoption(animal, this.category)
-    //     .then(result => {
-    //       this.presentToast("Succesfully Posted");
-    //       return this.closeModal();
-    //     }).then(_ => {
-    //       return this.cloud.createOwner(animal);
-    //     })
-    //     .catch(err => {
-    //       console.log(err);
-    //     });
-    // });
   }
 
   takePhoto() {

@@ -4,14 +4,7 @@ import { CloudProvider } from '../../providers/cloud/cloud';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { PetDetailsPage } from '../pet-details/pet-details';
 
-/**
- * Generated class for the MyAdoptionsPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
 
-@IonicPage()
 @Component({
   selector: 'page-my-adoptions',
   templateUrl: 'my-adoptions.html',

@@ -6,7 +6,6 @@ import { DomSanitizer } from "@angular/platform-browser/src/security/dom_sanitiz
 import { AngularFireAuth } from "angularfire2/auth";
 import { SpinnerDialog } from "@ionic-native/spinner-dialog";
 
-@IonicPage()
 @Component({
   selector: "page-pet-details",
   templateUrl: "pet-details.html"

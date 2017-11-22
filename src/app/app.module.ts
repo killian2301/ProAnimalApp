@@ -23,11 +23,10 @@ import { SanitizerPipe } from "../pipes/sanitizer/sanitizer";
 
 //SERVICES
 import { Camera } from "@ionic-native/camera";
-import { CloudinaryModule } from "@cloudinary/angular-4.x";
-import * as Cloudinary from "cloudinary-core";
 import { FileTransfer } from "@ionic-native/file-transfer";
 import { SpinnerDialog } from '@ionic-native/spinner-dialog';
 import { Facebook } from "@ionic-native/facebook";
+
 
 //PAGES
 import { NewForAdoptionPage } from "../pages/new-for-adoption/new-for-adoption";
@@ -39,6 +38,8 @@ import { MyPetsPage } from "../pages/my-pets/my-pets";
 import { MissingPetPage } from "../pages/missing-pet/missing-pet";
 import { MyAdoptionsPage } from "../pages/my-adoptions/my-adoptions";
 import { NewUserPage } from '../pages/new-user/new-user';
+import { FCM } from "@ionic-native/fcm";
+import { CookieService } from 'angular2-cookie/core';
 
 const firebaseConfig = {
   apiKey: "AIzaSyCDVa6tjLnQ0NrR_i9HGZJ68n6dAvmccVc",
@@ -48,6 +49,9 @@ const firebaseConfig = {
   storageBucket: "proanimalapp.appspot.com",
   messagingSenderId: "123565811630"
 };
+export function cookieServiceFactory() {
+  return new CookieService();
+}
 
 @NgModule({
   declarations: [
@@ -72,10 +76,6 @@ const firebaseConfig = {
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireDatabaseModule,
     AngularFireAuthModule,
-    CloudinaryModule.forRoot(Cloudinary, {
-      cloud_name: "killianjimenez",
-      upload_preset: "sqa8g67l"
-    })
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -99,7 +99,10 @@ const firebaseConfig = {
     Camera,
     FileTransfer,
     SpinnerDialog,
-    Facebook
+    Facebook,
+    FCM,
+    { provide: CookieService, useFactory: cookieServiceFactory },
+
   ]
 })
 export class AppModule {}

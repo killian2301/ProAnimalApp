@@ -10,7 +10,6 @@ import {
 } from "@ionic-native/file-transfer";
 // import { File } from "@ionic-native/file";
 import * as firebase from "firebase";
-import { Cloudinary } from "@cloudinary/angular-4.x";
 import { Observable } from "rxjs/Observable";
 import { List } from "ionic-angular/components/list/list";
 
@@ -22,12 +21,17 @@ export class CloudProvider {
     public http: Http,
     public db: AngularFireDatabase,
     private transfer: FileTransfer,
-    // private file: File,
-    private cloudinary: Cloudinary
   ) {}
 
   getMyPets(userId) {
     return this.db.list(`users/${userId}/petsInAdoption`).valueChanges();
+  }
+
+  registerToken(userId, token) {
+    return firebase
+      .database()
+      .ref(`users/${userId}/token`)
+      .set(token);
   }
 
   adoptPet(pet, userId) {
@@ -77,10 +81,7 @@ export class CloudProvider {
   }
 
   createOwner(pet) {
-    const refToUsers = firebase.database().ref(`users`);
-    const petKey = pet.petKey;
-    const ownerKey = pet.ownerId;
-    return refToUsers.child(`${ownerKey}/petsInAdoption/${petKey}`).set(pet);
+
   }
 
   getDogsInAdoption() {
@@ -90,11 +91,14 @@ export class CloudProvider {
       .map(array => array.reverse());
   }
 
-  setNewForAdoption(animal, category) {
-    const refToPet = firebase.database().ref(`petsInAdoption/${category}`);
-    const petKey = refToPet.push().key;
-    animal.petKey = petKey;
-    return refToPet.child(`${petKey}`).set(animal);
+  setNewForAdoption(pet) {
+    const ownerKey = pet.ownerId;
+    pet.petKey = firebase.database().ref(`users/${ownerKey}/petsInAdoption`).push().key;
+    return firebase.database().ref(`users/${ownerKey}/token`).once('value').then(token => {
+      pet.ownerToken = token.val();
+      return firebase.database().ref(`users/${ownerKey}/petsInAdoption/${pet.petKey}`).set(pet);
+
+    })
   }
 
   deletePet(pet) {
@@ -102,15 +106,8 @@ export class CloudProvider {
     const ownerKey = pet.ownerId;
     return firebase
       .database()
-      .ref(`petsInAdoption/${pet.category}/${petKey}`)
+      .ref(`users/${ownerKey}/petsInAdoption/${petKey}`)
       .remove()
-      .then(_ => {
-        firebase
-          .database()
-          .ref(`users/${ownerKey}/petsInAdoption/${petKey}`)
-          .remove()
-          .catch(err => console.log(err));
-      })
       .catch(err => console.log(err));
   }
 
@@ -135,12 +132,5 @@ export class CloudProvider {
         }
       );
 
-    // return this.http
-    //   .post(refToCloudinary, {
-    //     file: encodeURI(image),
-    //     upload_preset: "sqa8g67l"
-    //   })
-    //   .toPromise()
-    //   .then(result => result.json().url);
   }
 }

@@ -13,6 +13,8 @@ import { Subscription } from "rxjs/Subscription";
 import { SpinnerDialog } from "@ionic-native/spinner-dialog";
 import * as firebase from "firebase";
 import { tokenKey } from "@angular/core/src/view/util";
+import { FCM } from "@ionic-native/fcm";
+
 declare var FCMPlugin: any;
 
 @Component({
@@ -38,10 +40,22 @@ export class HomePage {
     private afAuth: AngularFireAuth,
     private navCtrl: NavController,
     private app: App,
-    private spinnerDialog: SpinnerDialog
+    private spinnerDialog: SpinnerDialog,
+    private fcm : FCM
   ) {
     this.petCategory = "cats";
     this.user = afAuth.auth.currentUser;
+    fcm.onNotification().subscribe(data => {
+      if (data.wasTapped) {
+        console.log("Received in background");
+      } else {
+        console.log("Received in foreground");
+      }
+    });
+
+    fcm.onTokenRefresh().subscribe(token => {
+      this.cloud.registerToken(this.user.profile.uid, token);
+    });
   }
 
   ionViewDidLoad() {
@@ -56,6 +70,7 @@ export class HomePage {
     });
     this.spinnerDialog.hide();
   }
+
 
   getTime(date) {
     let now = moment();
