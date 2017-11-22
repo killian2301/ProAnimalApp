@@ -1,6 +1,7 @@
 page-login {
   * {
     box-sizing: border-box;
+
   }
 
   .item {
@@ -23,7 +24,7 @@ page-login {
     border: 0.5px solid #2e2a6e;
   }
   .background-image {
-    background-image: url("../../assets/imgs/cat-and-dog-5.png");
+    background-image: url("../assets/imgs/cat-and-dog-5.png");
     background-size: cover;
     background-position: center;
     height: 100%;
@@ -66,7 +67,6 @@ page-login {
         font-size: 2.5em;
         color: #2e2a6e;
         margin-bottom: 10%;
-        font-family: 'Comfortaa', cursive;
 
       }
       .login-signin-container {

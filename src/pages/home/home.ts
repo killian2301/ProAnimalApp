@@ -54,7 +54,7 @@ export class HomePage {
       this.dogs = dogs;
       this.numberOfDogs = dogs.length;
     });
-
+    this.spinnerDialog.hide();
   }
 
   getTime(date) {
