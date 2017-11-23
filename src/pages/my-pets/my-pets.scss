@@ -1,4 +1,5 @@
 page-my-pets {
+
   .container {
     display: flex;
     justify-content: center;
@@ -7,18 +8,18 @@ page-my-pets {
     text-align: center;
     flex-wrap: wrap;
     color: #6d52a2;
+    .grid{
+      height: 100%;
+    }
   }
   h1 {
     width: 100%;
   }
-  .text{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
+  .text {
+    text-align: center;
+    width: 100vw;
   }
-  .title{
+  .title {
     text-align: center;
     width: 100vw;
   }
@@ -26,12 +27,14 @@ page-my-pets {
     background-size: cover !important;
     background-position: center !important;
     height: 100px;
+    width: 100px;
   }
   .paw-icon {
     font-size: 20em;
     opacity: 0.1;
-    position: absolute;
+    position: fixed;
     margin: auto;
+    margin-top: 50%;
     left: 0;
     right: 0;
   }

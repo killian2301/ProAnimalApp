@@ -16,8 +16,8 @@ export class PetDetailsPage {
   pet: any;
   adopted: boolean;
   user: any;
-  bgImg: any;
   wantedByUsers: Array<any> = [];
+  wantedObservable: any;
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -28,14 +28,18 @@ export class PetDetailsPage {
   ) {
     this.pet = navParams.get("pet");
     this.pet.category = navParams.get("category");
-    this.bgImg = `url(${this.pet.img})`;
+    console.log("......>",this.pet);
+    console.log(".....>",this.pet.category);
     this.user = this.afAuth.auth.currentUser;
-    this.getWantedBy();
     // this.adopted =
-    this.setAdopted();
+    console.log("HOLA SOY PET-DETAILS");
   }
-  setAdopted() {
-    console.log("--->", this.wantedByUsers);
+  ionViewDidEnter(){
+    this.getWantedBy();
+
+  }
+  ionViewDidLeave(){
+    this.wantedByUsers = [];
   }
   deletePet() {
     this.spinnerDialog.show();
@@ -49,16 +53,18 @@ export class PetDetailsPage {
       .catch(error => this.presentToast(error));
   }
   getWantedBy() {
-    return this.cloud.getWantedBy(this.pet).subscribe(wantedBy => {
+    console.log(this.pet);
+    return this.wantedObservable = this.cloud.getWantedBy(this.pet).subscribe(wantedBy => {
       this.adopted = false;
+      console.log("LLEGO AQUI");
+      console.log('WantedBy: ', wantedBy);
+
       wantedBy.forEach((wantedByUser: any) => {
         this.wantedByUsers.push(wantedByUser);
-        console.log(wantedByUser);
+        console.log("this.wantedByUsers: ",this.wantedByUsers);
         if (wantedByUser.userId == this.user.uid) {
-          console.log("SIII");
           this.adopted = true;
         }
-        console.log("o====>", this.wantedByUsers);
       });
       // this.adopted =
     });
@@ -71,6 +77,7 @@ export class PetDetailsPage {
     this.navCtrl.push(InterestedUserInfoPage, { user: user });
   }
   closeModal() {
+    this.wantedObservable.unsubscribe();
     return this.navCtrl.pop();
   }
   presentToast(message) {

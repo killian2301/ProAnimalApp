@@ -16,7 +16,6 @@ import { AngularFireAuthModule } from "angularfire2/auth";
 import { FormsModule } from "@angular/forms";
 import { HttpModule } from "@angular/http";
 
-
 //PIPES
 import { CapitalizePipe } from "../pipes/capitalize/capitalize";
 import { SanitizerPipe } from "../pipes/sanitizer/sanitizer";
@@ -24,9 +23,9 @@ import { SanitizerPipe } from "../pipes/sanitizer/sanitizer";
 //SERVICES
 import { Camera } from "@ionic-native/camera";
 import { FileTransfer } from "@ionic-native/file-transfer";
-import { SpinnerDialog } from '@ionic-native/spinner-dialog';
+import { SpinnerDialog } from "@ionic-native/spinner-dialog";
 import { Facebook } from "@ionic-native/facebook";
-
+import cloudinary from "cloudinary-core";
 
 //PAGES
 import { NewForAdoptionPage } from "../pages/new-for-adoption/new-for-adoption";
@@ -37,11 +36,13 @@ import { LoginPage } from "../pages/login/login";
 import { MyPetsPage } from "../pages/my-pets/my-pets";
 import { MissingPetPage } from "../pages/missing-pet/missing-pet";
 import { MyAdoptionsPage } from "../pages/my-adoptions/my-adoptions";
-import { NewUserPage } from '../pages/new-user/new-user';
+import { NewUserPage } from "../pages/new-user/new-user";
 import { FCM } from "@ionic-native/fcm";
-import { CookieService } from 'angular2-cookie/core';
+import { CookieService } from "angular2-cookie/core";
 import { RequestUserInfoPage } from "../pages/request-user-info/request-user-info";
 import { InterestedUserInfoPage } from "../pages/interested-user-info/interested-user-info";
+
+const cl = new cloudinary.Cloudinary({ cloud_name: "killianjimenez", upload_preset: "sqa8g67l" });
 
 const firebaseConfig = {
   apiKey: "AIzaSyCDVa6tjLnQ0NrR_i9HGZJ68n6dAvmccVc",
@@ -79,7 +80,7 @@ export function cookieServiceFactory() {
     HttpModule,
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireDatabaseModule,
-    AngularFireAuthModule,
+    AngularFireAuthModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -95,7 +96,6 @@ export function cookieServiceFactory() {
     NewUserPage,
     RequestUserInfoPage,
     InterestedUserInfoPage
-
   ],
   providers: [
     StatusBar,
@@ -107,8 +107,8 @@ export function cookieServiceFactory() {
     SpinnerDialog,
     Facebook,
     FCM,
-    { provide: CookieService, useFactory: cookieServiceFactory },
-
+    FileTransfer,
+    { provide: CookieService, useFactory: cookieServiceFactory }
   ]
 })
 export class AppModule {}

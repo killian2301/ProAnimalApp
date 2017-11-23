@@ -1,6 +1,6 @@
 page-pet-details {
   .scroll-content {
-    display:flex !important;
+    display: flex !important;
     flex-direction: column;
     justify-content: center;
     max-height: 100vh;
@@ -8,22 +8,24 @@ page-pet-details {
     overflow: hidden;
   }
 
-  .img{
+  .img {
     height: 250px;
     width: 100%;
     background-size: cover;
     background-position: center;
   }
-
-  .backgroundImage{
+  .toolbar-title, .toolbar-title-ios {
+    color: #2e2a6e;
+  }
+  .backgroundImage {
     position: absolute;
-    top: -1%;
-    left: -1%;
-    width: 102%;
-    height: 102%;
+    top: -5%;
+    left: -5%;
+    width: 110%;
+    height: 110%;
     background-size: cover;
     background-position: center;
-    filter: blur(7px);
+    filter: blur(10px);
     z-index: -1;
   }
 }

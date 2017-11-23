@@ -5,12 +5,6 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { ModalController } from 'ionic-angular/components/modal/modal-controller';
 import { PetDetailsPage } from '../pet-details/pet-details';
 
-/**
- * Generated class for the MyPetsPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
 
 @Component({
   selector: 'page-my-pets',
@@ -28,10 +22,10 @@ export class MyPetsPage {
     });
   }
 
-  petDetails(pet) {
+  petDetails(choosenPet) {
     let modal = this.modalCtrl.create(PetDetailsPage, {
-      pet: pet,
-      category: pet.category
+      pet: choosenPet,
+      category: choosenPet.profile.category
     });
     modal.present();
   }

@@ -72,25 +72,25 @@ export class CloudProvider {
   }
 
   getWantedBy(pet) {
+    // return firebase.database().ref(``)
     return this.db
-      .list(`petsInAdoption/${pet.category}/${pet.petKey}/wantedBy`)
+      .list(`petsInAdoption/${pet.profile.category}/${pet.petKey}/wantedBy`)
       .valueChanges();
-
   }
 
-  getWantedPets(userId) {
-    var keys = [];
-    firebase
-      .database()
-      .ref(`users/${userId}/wantedPets`)
-      .once("value", snapshot => {
-        snapshot.forEach(pet => {
-          keys.push(pet.key);
-          return true;
-        });
-      });
-    return keys;
-  }
+  // getWantedPets(userId) {
+  //   var keys = [];
+  //   firebase
+  //     .database()
+  //     .ref(`users/${userId}/wantedPets`)
+  //     .once("value", snapshot => {
+  //       snapshot.forEach(pet => {
+  //         keys.push(pet.key);
+  //         return true;
+  //       });
+  //     });
+  //   return keys;
+  // }
 
   getDogsInAdoption() {
     return this.db
@@ -118,11 +118,6 @@ export class CloudProvider {
       });
   }
 
-  uploadToCloudinary(){
-
-  }
-
-
   deletePet(pet) {
     const petKey = pet.petKey;
     const ownerKey = pet.ownerId;
@@ -143,14 +138,14 @@ export class CloudProvider {
   uploadPicture(image) {
     const refToCloudinary =
       "https://api.cloudinary.com/v1_1/killianjimenez/image/upload";
-    console.log(encodeURI(image));
+    console.log(image);
     let options: FileUploadOptions = {
       params: {
         upload_preset: "sqa8g67l"
       }
     };
     return this.fileTransfer
-      .upload(encodeURI(image), refToCloudinary, options)
+      .upload(decodeURI(image), refToCloudinary, options)
       .then(
         data => {
           console.log(data.response);
@@ -161,6 +156,7 @@ export class CloudProvider {
         }
       );
   }
+
   showToast(message) {
     return this.toast
       .create({

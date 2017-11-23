@@ -23,8 +23,9 @@ page-my-adoptions {
   .paw-icon {
     font-size: 20em;
     opacity: 0.1;
-    position: absolute;
+    position: fixed;
     margin: auto;
+    margin-top: 50%;
     left: 0;
     right: 0;
   }

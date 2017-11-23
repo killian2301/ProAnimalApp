@@ -34,7 +34,7 @@ export class NewForAdoptionPage {
     public sanitizer: DomSanitizer,
     public afAuth: AngularFireAuth,
     public spinnerDialog: SpinnerDialog,
-    private elRef:ElementRef
+    private elRef: ElementRef
   ) {
     this.category = this.navParams.get("category");
     this.showButtons = true;
@@ -74,22 +74,26 @@ export class NewForAdoptionPage {
         sex: this.sex,
         category: this.category,
         description: this.description,
-        img: this.img
+        img: ""
       },
       ownerId: this.afAuth.auth.currentUser.uid,
       ownerToken: "",
       date: Date.now(),
       wanted: []
     };
-    return this.cloud
-      .setNewForAdoption(animal)
-      .then(result => {
-        this.presentToast("Succesfully Posted");
-        return this.closeModal();
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    return this.cloud.uploadPicture(this.img).then(imageUrl => {
+      console.log("ImageUrl ---> ",imageUrl);
+      animal.profile.img = imageUrl;
+      return this.cloud
+        .setNewForAdoption(animal)
+        .then(result => {
+          this.presentToast("Succesfully Posted");
+          return this.closeModal();
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    });
   }
 
   takePhoto() {
@@ -139,7 +143,6 @@ export class NewForAdoptionPage {
       }
     );
   }
-
 
   presentToast(message) {
     let toast = this.toastCtr.create({
