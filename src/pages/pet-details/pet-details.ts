@@ -5,19 +5,15 @@ import { ToastController } from "ionic-angular/components/toast/toast-controller
 import { DomSanitizer } from "@angular/platform-browser/src/security/dom_sanitization_service";
 import { AngularFireAuth } from "angularfire2/auth";
 import { SpinnerDialog } from "@ionic-native/spinner-dialog";
-
+import * as _ from "lodash";
+import { RequestUserInfoPage } from "../request-user-info/request-user-info";
+import { InterestedUserInfoPage } from "../interested-user-info/interested-user-info";
 @Component({
   selector: "page-pet-details",
   templateUrl: "pet-details.html"
 })
 export class PetDetailsPage {
-  pet: {
-    name: "";
-    petKey: "";
-    category: "";
-    img: "";
-    ownerId: "";
-  };
+  pet: any;
   adopted: boolean;
   user: any;
   bgImg: any;
@@ -34,11 +30,13 @@ export class PetDetailsPage {
     this.pet.category = navParams.get("category");
     this.bgImg = `url(${this.pet.img})`;
     this.user = this.afAuth.auth.currentUser;
-    if (this.pet.ownerId != this.user.uid) {
-      this.checkIfIWantThisPet();
-    }
+    this.getWantedBy();
+    // this.adopted =
+    this.setAdopted();
   }
-
+  setAdopted() {
+    console.log("--->", this.wantedByUsers);
+  }
   deletePet() {
     this.spinnerDialog.show();
     return this.cloud
@@ -50,11 +48,31 @@ export class PetDetailsPage {
       })
       .catch(error => this.presentToast(error));
   }
+  getWantedBy() {
+    return this.cloud.getWantedBy(this.pet).subscribe(wantedBy => {
+      this.adopted = false;
+      wantedBy.forEach((wantedByUser: any) => {
+        this.wantedByUsers.push(wantedByUser);
+        console.log(wantedByUser);
+        if (wantedByUser.userId == this.user.uid) {
+          console.log("SIII");
+          this.adopted = true;
+        }
+        console.log("o====>", this.wantedByUsers);
+      });
+      // this.adopted =
+    });
+    // return this.cloud.getWantedBy(this.pet).then(wantedBy => {
+    //   this.wantedByUsers = wantedBy;
+    // });
+  }
 
+  interestedUserInfo(user) {
+    this.navCtrl.push(InterestedUserInfoPage, { user: user });
+  }
   closeModal() {
     return this.navCtrl.pop();
   }
-
   presentToast(message) {
     let toast = this.toastCtr.create({
       message: message,
@@ -62,35 +80,12 @@ export class PetDetailsPage {
     });
     toast.present();
   }
-
-  checkIfIWantThisPet() {
-    return this.cloud.getWantedBy(this.pet).then(wantedBy => {
-      console.log(wantedBy);
-      return this.adopted = wantedBy.includes(this.user.uid) ? true : false;
-    });
-  }
-
-  checkIfIWantThisPet2() {
-    var wantedPets = [];
-    wantedPets = this.cloud.getWantedPets(this.afAuth.auth.currentUser.uid);
-    console.log(wantedPets);
-    if (wantedPets.includes(this.pet.petKey)) {
-      this.adopted = true;
-    } else {
-      this.adopted = false;
-    }
-  }
-
   adoptPet() {
     this.spinnerDialog.show();
     if (!this.adopted) {
-      this.cloud
-        .adoptPet(this.pet, this.afAuth.auth.currentUser.uid)
-        .then(_ => {
-          this.presentToast(
-            `You will find ${this.pet.name} in your "My adoptions" tab :)`
-          );
-        });
+      return this.navCtrl.push(RequestUserInfoPage, {
+        pet: this.pet
+      });
     } else {
       this.cloud
         .deleteAdoptPet(this.pet, this.afAuth.auth.currentUser.uid)

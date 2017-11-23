@@ -1,0 +1,18 @@
+
+
+<ion-content padding>
+  <div *ngIf="user" class="container">
+    <!-- <div *ngIf="user.profile.img != ''" class="img" [style.background-image]="'url(' + user.profile.img + ')'"></div> -->
+    <div class="img default"></div>
+    <div class="info name">
+      <h2>Name</h2><span>{{user.profile.displayName}}</span>
+    </div>
+    <div *ngIf="user.profile.phone" class="info phone">
+        <h2>Phone</h2><span>{{user.profile.phone}}</span>
+    </div>
+    <div class="info email">
+        <h2>Email</h2><span>{{user.profile.email}}</span>
+    </div>
+  </div>
+</ion-content>
+

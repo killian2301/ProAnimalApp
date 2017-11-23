@@ -112,9 +112,9 @@ export class HomePage {
     modal.present();
   }
 
-  petDetails(pet) {
+  petDetails(choosenPet) {
     let modal = this.modalCtrl.create(PetDetailsPage, {
-      pet: pet,
+      pet: choosenPet,
       category: this.petCategory
     });
     modal.present();

@@ -16,17 +16,23 @@ import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { FormsModule } from "@angular/forms";
 import { HttpModule } from "@angular/http";
+
 //PAGES
 import { AboutPage } from '../pages/about/about';
 import { ContactPage } from '../pages/contact/contact';
 import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
 import { SettingsPage } from "../pages/settings/settings";
+
+
 //PIPES
 import { CapitalizePipe } from "../pipes/capitalize/capitalize";
 import { NewForAdoptionPage } from "../pages/new-for-adoption/new-for-adoption";
 import { Camera } from "@ionic-native/camera";
 import { ImagePicker } from "@ionic-native/image-picker";
+import 'babel-polyfill';
+import { RequestUserInfoPage } from '../pages/request-user-info/request-user-info';
+
 var firebaseConfig = {
     apiKey: "AIzaSyCDVa6tjLnQ0NrR_i9HGZJ68n6dAvmccVc",
     authDomain: "proanimalapp.firebaseapp.com",
@@ -48,6 +54,7 @@ var AppModule = /** @class */ (function () {
                 TabsPage,
                 SettingsPage,
                 NewForAdoptionPage,
+                RequestUserInfoPage,
                 CapitalizePipe
             ],
             imports: [
@@ -68,6 +75,7 @@ var AppModule = /** @class */ (function () {
                 TabsPage,
                 SettingsPage,
                 NewForAdoptionPage,
+                RequestUserInfoPage
             ],
             providers: [
                 StatusBar,

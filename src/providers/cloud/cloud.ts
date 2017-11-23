@@ -12,6 +12,7 @@ import {
 import * as firebase from "firebase";
 import { Observable } from "rxjs/Observable";
 import { List } from "ionic-angular/components/list/list";
+import { ToastController } from "ionic-angular/components/toast/toast-controller";
 
 @Injectable()
 export class CloudProvider {
@@ -20,7 +21,8 @@ export class CloudProvider {
   constructor(
     public http: Http,
     public db: AngularFireDatabase,
-    private transfer: FileTransfer
+    private transfer: FileTransfer,
+    private toast: ToastController
   ) {}
 
   getMyPets(userId) {
@@ -30,8 +32,11 @@ export class CloudProvider {
   registerToken(userId, token) {
     return firebase
       .database()
-      .ref(`users/${userId}/token`)
-      .set(token);
+      .ref(`users/${userId}/`)
+      .update({
+        token: token,
+        userId: userId
+      });
   }
 
   adoptPet(pet, userId) {
@@ -67,13 +72,10 @@ export class CloudProvider {
   }
 
   getWantedBy(pet) {
-    return firebase
-      .database()
-      .ref(`petsInAdoption/${pet.profile.category}/${pet.petKey}/wantedBy`)
-      .once("value")
-      .then(wantedBy => {
-        return wantedBy.val();
-      });
+    return this.db
+      .list(`petsInAdoption/${pet.category}/${pet.petKey}/wantedBy`)
+      .valueChanges();
+
   }
 
   getWantedPets(userId) {
@@ -116,6 +118,11 @@ export class CloudProvider {
       });
   }
 
+  uploadToCloudinary(){
+
+  }
+
+
   deletePet(pet) {
     const petKey = pet.petKey;
     const ownerKey = pet.ownerId;
@@ -124,6 +131,13 @@ export class CloudProvider {
       .ref(`users/${ownerKey}/petsInAdoption/${petKey}`)
       .remove()
       .catch(err => console.log(err));
+  }
+
+  setUserProfile(userProfile, userId) {
+    return firebase
+      .database()
+      .ref(`/users/${userId}/profile`)
+      .set(userProfile);
   }
 
   uploadPicture(image) {
@@ -146,5 +160,14 @@ export class CloudProvider {
           console.log(err);
         }
       );
+  }
+  showToast(message) {
+    return this.toast
+      .create({
+        message: message,
+        duration: 3000,
+        position: "bottom"
+      })
+      .present();
   }
 }

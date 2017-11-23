@@ -23,8 +23,7 @@
 
   <ion-card>
     <div class="image-div">
-      <!-- <img *ngIf="img == defaultImage" class="img-background" [src]="img"/> -->
-      <div class="img-background" [style.background-image]="sanitizedImage"></div>
+      <div class="img-background" [ngClass]="{'opacity1': !isDefaultImage}" [style.background-image]="'url(' + img + ')' | sanitizer:'style'"></div>
       <div *ngIf="showButtons" class="buttons">
         <button ion-button clear (click)="takePhoto()">
           <ion-icon ios="ios-camera" md="md-camera" class="camera-button"></ion-icon>

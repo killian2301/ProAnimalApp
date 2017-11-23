@@ -53,11 +53,6 @@ export class LoginPage {
           .signInWithCredential(facebookCredential)
           .then(_ => {
             return this.fcm.getToken().then(token => {
-              console.log("token", token);
-              console.log(
-                "this.afAuth.auth.currentUser.uid",
-                this.afAuth.auth.currentUser.uid
-              );
               return this.cloud.registerToken(
                 this.afAuth.auth.currentUser.uid,
                 token
@@ -89,20 +84,13 @@ export class LoginPage {
   login() {
     this.spinnerDialog.show();
     this.afAuth.auth
-      .signInWithEmailAndPassword(this.email, this.password).catch(err => this.showToast(err))
+      .signInWithEmailAndPassword(this.email, this.password)
+      .catch(err => this.cloud.showToast(err))
       .then(_ => {
         this.spinnerDialog.hide();
       });
   }
-  showToast(message) {
-    return this.toast
-      .create({
-        message: message,
-        duration: 3000,
-        position: "bottom"
-      })
-      .present();
-  }
+
   signOut() {
     this.afAuth.auth.signOut();
   }

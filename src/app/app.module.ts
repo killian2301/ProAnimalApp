@@ -40,6 +40,8 @@ import { MyAdoptionsPage } from "../pages/my-adoptions/my-adoptions";
 import { NewUserPage } from '../pages/new-user/new-user';
 import { FCM } from "@ionic-native/fcm";
 import { CookieService } from 'angular2-cookie/core';
+import { RequestUserInfoPage } from "../pages/request-user-info/request-user-info";
+import { InterestedUserInfoPage } from "../pages/interested-user-info/interested-user-info";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCDVa6tjLnQ0NrR_i9HGZJ68n6dAvmccVc",
@@ -65,6 +67,8 @@ export function cookieServiceFactory() {
     MyAdoptionsPage,
     MissingPetPage,
     NewUserPage,
+    InterestedUserInfoPage,
+    RequestUserInfoPage,
     CapitalizePipe,
     SanitizerPipe
   ],
@@ -88,7 +92,9 @@ export function cookieServiceFactory() {
     MyPetsPage,
     MissingPetPage,
     MyAdoptionsPage,
-    NewUserPage
+    NewUserPage,
+    RequestUserInfoPage,
+    InterestedUserInfoPage
 
   ],
   providers: [

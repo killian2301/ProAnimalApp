@@ -1,0 +1,39 @@
+page-interested-user-info {
+  .scroll-content{
+    background-color: #6ec9c2;
+  }
+  .container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+  }
+  .info{
+    text-align: center;
+    margin: 5%;
+    padding: 3%;
+  }
+  h2{
+    color:#2e2a6e;
+  }
+  span{
+    color: #6d52a2;
+  }
+  .img{
+    // min-height: 30%;
+    // min-width: 54%;
+    width: 150px !important;
+    height: 150px;
+    width: auto;
+    margin-bottom: 5%;
+    // background-position: center;
+    // background-size: cover;
+  }
+  .default{
+    background-image: url("../assets/imgs/user.png");
+    background-size: cover;
+    background-position: center;
+  }
+}

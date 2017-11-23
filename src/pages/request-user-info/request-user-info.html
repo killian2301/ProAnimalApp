@@ -1,0 +1,21 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Tell us about you</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-list>
+    <h3>Hey {{userProfile.displayName}}, let's provide the owner of {{pet.profile.name}} a way to contact you!</h3>
+    <ion-item>
+      <ion-label fixed>Phone:</ion-label>
+      <ion-input [(ngModel)]="userProfile.phone" placeholder="(opcional)" type="phone"></ion-input>
+    </ion-item>
+
+  </ion-list>
+  <a (click)="closeModal()">I rather contact by email</a>
+  <button ion-button block (click)="sendRequest()">Request Info!</button>
+</ion-content>

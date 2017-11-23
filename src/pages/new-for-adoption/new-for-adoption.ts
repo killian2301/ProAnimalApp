@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, ElementRef } from "@angular/core";
 import { IonicPage, NavController, NavParams } from "ionic-angular";
 import { CloudProvider } from "../../providers/cloud/cloud";
 import { Camera, CameraOptions } from "@ionic-native/camera";
@@ -12,8 +12,8 @@ import { SpinnerDialog } from "@ionic-native/spinner-dialog";
   templateUrl: "new-for-adoption.html"
 })
 export class NewForAdoptionPage {
-  img: any;
-  sanitizedImage: any;
+  demo: boolean = false;
+  img: string = "";
   name: string;
   age: string;
   sex: string;
@@ -33,22 +33,30 @@ export class NewForAdoptionPage {
     public cloud: CloudProvider,
     public sanitizer: DomSanitizer,
     public afAuth: AngularFireAuth,
-    public spinnerDialog: SpinnerDialog
+    public spinnerDialog: SpinnerDialog,
+    private elRef:ElementRef
   ) {
     this.category = this.navParams.get("category");
     this.showButtons = true;
-    if (this.category == "dogs") {
-      this.sanitizedImage = `url(${this.dogImage})`;
-    } else {
-      this.sanitizedImage = `url(${this.catImage})`;
-    }
+    // if (this.category == "dogs") {
+    //   this.sanitizedImage = `url(${this.dogImage})`;
+    // } else {
+    //   this.sanitizedImage = `url(${this.catImage})`;
+    // }
     this.isDefaultImage = true;
-
-    this.name = "Prueba";
-    this.age = "3";
-    this.sex = "male";
-    this.description = "dasefasfgas";
-    this.img = "http://lorempixel.com/200/200/";
+    if (this.demo) {
+      this.name = "Prueba";
+      this.age = "3";
+      this.sex = "male";
+      this.description = "dasefasfgas";
+      this.img = "http://lorempixel.com/200/200/";
+    } else {
+      this.name = "";
+      this.age = "";
+      this.sex = "";
+      this.description = "";
+      this.img = this.category == "dogs" ? this.dogImage : this.catImage;
+    }
   }
 
   closeModal() {
@@ -66,10 +74,10 @@ export class NewForAdoptionPage {
         sex: this.sex,
         category: this.category,
         description: this.description,
-        img: "http://lorempixel.com/200/200/"
+        img: this.img
       },
       ownerId: this.afAuth.auth.currentUser.uid,
-      ownerToken: '',
+      ownerToken: "",
       date: Date.now(),
       wanted: []
     };
@@ -95,8 +103,7 @@ export class NewForAdoptionPage {
     return this.camera.getPicture(options).then(
       imageUrl => {
         console.log("IMG URL: ", imageUrl);
-        // this.img = this.sanitizer.bypassSecurityTrustStyle(`url(${imageUrl})`);
-        this.img = "file:///" + imageUrl;
+        this.img = encodeURI(imageUrl);
         this.showButtons = false;
         this.isDefaultImage = false;
         return true;
@@ -113,28 +120,26 @@ export class NewForAdoptionPage {
       mediaType: this.camera.MediaType.PICTURE,
       targetWidth: 480,
       sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
-      saveToPhotoAlbum: false,
+      saveToPhotoAlbum: true,
       correctOrientation: true
     };
 
-    return (this.img = "http://lorempixel.com/200/200/");
-    // return this.camera.getPicture(options).then(
-    //   imageUrl => {
-    //     console.log("IMG URL: ", imageUrl);
-    //     this.img = imageUrl;
-    //     this.sanitizedImage = imageUrl;
-    //     // this.sanitizedImage = this.sanitizer.bypassSecurityTrustStyle(
-    //     //   `url(file://${encodeURI(imageUrl)})`
-    //     // );
-    //     this.showButtons = false;
-    //     this.isDefaultImage = false;
-    //     return true;
-    //   },
-    //   err => {
-    //     this.presentToast(err);
-    //   }
-    // );
+    return this.camera.getPicture(options).then(
+      imageUrl => {
+        console.log("IMG URL: ", imageUrl);
+        // this.img = imageUrl;
+        this.img = encodeURI(imageUrl);
+
+        this.showButtons = false;
+        this.isDefaultImage = false;
+        return true;
+      },
+      err => {
+        this.presentToast(err);
+      }
+    );
   }
+
 
   presentToast(message) {
     let toast = this.toastCtr.create({
@@ -146,9 +151,11 @@ export class NewForAdoptionPage {
 
   completedForm() {
     return (
-      this.name && this.age && this.description && this.sex
-      // &&
-      // !this.isDefaultImage
+      this.name &&
+      this.age &&
+      this.description &&
+      this.sex &&
+      !this.isDefaultImage
     );
   }
 

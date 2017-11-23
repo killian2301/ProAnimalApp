@@ -42,22 +42,33 @@ exports.wantedPet = functions.database
     const petId = wantedPetData.params.petId;
     const petCategory = pet.profile.category;
     const ownerToken = pet.ownerToken;
+
     return admin
       .database()
-      .ref(`petsInAdoption/${petCategory}/${petId}/wantedBy/${userId}`)
-      .set(ownerToken)
-      .then(_ => {
-        const payload = {
-          notification: {
-            title: `Somebody wants to adopt ${pet.profile.name}!`,
-            body: "Tap here to see more",
-            sound: "default"
-          }
-        };
-        return admin.messaging().sendToDevice(ownerToken, payload).then(success => {
-          console.log("se ha enviado la push a token:", ownerToken);
-          console.log(success);
-        });
+      .ref(`users/${userId}`)
+      .once("value")
+      .then(userData => {
+        const user = userData.val();
+        return admin
+          .database()
+          .ref(`petsInAdoption/${petCategory}/${petId}/wantedBy/${userId}`)
+          .set(user)
+          .then(_ => {
+            const payload = {
+              notification: {
+                title: `Somebody wants to adopt ${pet.profile.name}!`,
+                body: "Tap here to see more",
+                sound: "default"
+              }
+            };
+            return admin
+              .messaging()
+              .sendToDevice(ownerToken, payload)
+              .then(success => {
+                console.log("se ha enviado la push a token:", ownerToken);
+                console.log(success);
+              });
+          });
       });
   });
 

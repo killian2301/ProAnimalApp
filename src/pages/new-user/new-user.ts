@@ -40,7 +40,7 @@ export class NewUserPage {
   createUser() {
     if (this.passwordMatches()) {
       this.spinnerDialog.show();
-      this.afAuth.auth
+      return this.afAuth.auth
         .createUserWithEmailAndPassword(this.email, this.password)
         .then(result => {
           return this.afAuth.auth.currentUser
@@ -58,22 +58,17 @@ export class NewUserPage {
                   });
               });
             });
+        })
+        .catch(err => {
+          this.spinnerDialog.hide();
+          this.cloud.showToast(err);
         });
     } else {
-      this.showToast("Password do not match!");
+      this.cloud.showToast("Password do not match!");
       this.password2 = "";
     }
   }
 
-  showToast(message) {
-    return this.toast
-      .create({
-        message: message,
-        duration: 3000,
-        position: "bottom"
-      })
-      .present();
-  }
   closeModal() {
     return this.navCtrl.pop();
   }

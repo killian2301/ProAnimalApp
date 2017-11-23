@@ -33,18 +33,18 @@
     </ion-card-content>
   </ion-card>
   <div *ngIf="pet.ownerId == user.uid" class="owner">
-    <div class="wanted-by">
+    <div *ngIf="wantedByUsers?.length > 0" class="wanted-by">
       <ion-card>
-        <ion-card-title>These users are interested: </ion-card-title>
-        <ion-card-content *ngFor="let user of wantedByUsers">
-          {{user.name}}
+        <ion-card-header>These users are interested: </ion-card-header>
+        <ion-card-content (click)="interestedUserInfo(user)" *ngFor="let user of wantedByUsers">
+          {{user.profile.displayName}}
         </ion-card-content>
       </ion-card>
     </div>
     <button ion-button (click)="deletePet()" color="danger" block>Remove from adoption</button>
   </div>
   <div *ngIf="pet.ownerId != user.uid" class="not-owner">
-    <button ion-button *ngIf="pet.ownerId != user.uid && !adopted" (click)="adoptPet(true)" color="primary" block>Adopt me!</button>
-    <button ion-button *ngIf="pet.ownerId != user.uid && adopted" (click)="adoptPet(false)" color="primary" block>I don't want to adopt this pet!</button>
+    <button ion-button *ngIf="!adopted" (click)="adoptPet(true)" color="primary" block>Adopt me!</button>
+    <button ion-button *ngIf="adopted" (click)="adoptPet(false)" color="primary" block>I don't want to adopt this pet!</button>
   </div>
 </ion-content>
