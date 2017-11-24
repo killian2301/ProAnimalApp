@@ -63,9 +63,7 @@ exports.wantedPet = functions.database
               },
               data:{
                 petName: pet.profile.name
-              },
-              priority:"high",
-
+              }
             };
             return admin
               .messaging()
