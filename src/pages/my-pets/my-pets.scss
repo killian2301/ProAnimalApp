@@ -1,5 +1,4 @@
 page-my-pets {
-
   .container {
     display: flex;
     justify-content: center;
@@ -8,18 +7,11 @@ page-my-pets {
     text-align: center;
     flex-wrap: wrap;
     color: #6d52a2;
-    .grid{
-      height: 100%;
-    }
   }
   h1 {
     width: 100%;
   }
   .text {
-    text-align: center;
-    width: 100vw;
-  }
-  .title {
     text-align: center;
     width: 100vw;
   }

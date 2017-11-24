@@ -40,10 +40,11 @@
         </ion-card-content>
       </ion-card>
     </div>
+    <!-- <button ion-button (click)="modify()" color="primary" block>Modify</button> -->
     <button ion-button (click)="deletePet()" color="danger" block>Remove from adoption</button>
   </div>
   <div *ngIf="pet.ownerId != user.uid" class="not-owner">
-    <button ion-button *ngIf="!adopted" (click)="adoptPet(true)" color="primary" block>Adopt me!</button>
-    <button ion-button *ngIf="adopted" (click)="adoptPet(false)" color="primary" block>I don't want to adopt this pet!</button>
+    <button ion-button *ngIf="!adopted" (click)="adoptPet(true)" color="primary" block>Request information!</button>
+    <button ion-button *ngIf="adopted" (click)="adoptPet(false)" color="danger" block>Cancel my request!</button>
   </div>
 </ion-content>

@@ -58,8 +58,14 @@ exports.wantedPet = functions.database
               notification: {
                 title: `Somebody wants to adopt ${pet.profile.name}!`,
                 body: "Tap here to see more",
-                sound: "default"
-              }
+                sound: "default",
+                click_action: "FCM_PLUGIN_ACTIVITY"
+              },
+              data:{
+                petName: pet.profile.name
+              },
+              priority:"high",
+
             };
             return admin
               .messaging()
@@ -85,4 +91,24 @@ exports.deleteWantedPet = functions.database
       .database()
       .ref(`petsInAdoption/${petCategory}/${petId}/wantedBy/${userId}`)
       .remove();
+  });
+
+exports.deletePetCleanup = functions.database
+  .ref("/petsInAdoption/{category}/{petId}/wantedBy")
+  .onDelete(wantedByData => {
+    const wantedBy = wantedByData.data.previous.val();
+    const petId = wantedByData.params.petId;
+    console.log(wantedBy);
+    console.log(",,,,>",Object.keys(wantedBy));
+    var promises = [];
+    Object.keys(wantedBy).forEach(key => {
+      console.log(key);
+      promises.push(
+        admin
+          .database()
+          .ref(`users/${key}/wantedPets/${petId}`)
+          .remove()
+      );
+    });
+    return Promise.all(promises);
   });

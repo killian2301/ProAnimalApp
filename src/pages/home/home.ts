@@ -14,6 +14,7 @@ import { SpinnerDialog } from "@ionic-native/spinner-dialog";
 import * as firebase from "firebase";
 import { tokenKey } from "@angular/core/src/view/util";
 import { FCM } from "@ionic-native/fcm";
+import { ToastController } from "ionic-angular/components/toast/toast-controller";
 
 declare var FCMPlugin: any;
 
@@ -50,6 +51,7 @@ export class HomePage {
         console.log("Received in background");
       } else {
         console.log("Received in foreground");
+        this.cloud.showToast(`Someone is interested in ${data.petName}!`);
       }
     });
 

@@ -41,6 +41,7 @@ import { FCM } from "@ionic-native/fcm";
 import { CookieService } from "angular2-cookie/core";
 import { RequestUserInfoPage } from "../pages/request-user-info/request-user-info";
 import { InterestedUserInfoPage } from "../pages/interested-user-info/interested-user-info";
+import { ShortNamePipe } from "../pipes/short-name/short-name";
 
 const cl = new cloudinary.Cloudinary({ cloud_name: "killianjimenez", upload_preset: "sqa8g67l" });
 
@@ -71,7 +72,8 @@ export function cookieServiceFactory() {
     InterestedUserInfoPage,
     RequestUserInfoPage,
     CapitalizePipe,
-    SanitizerPipe
+    SanitizerPipe,
+    ShortNamePipe
   ],
   imports: [
     BrowserModule,

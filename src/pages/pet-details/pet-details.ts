@@ -41,8 +41,14 @@ export class PetDetailsPage {
   ionViewDidLeave(){
     this.wantedByUsers = [];
   }
+
   deletePet() {
     this.spinnerDialog.show();
+    // Debo mirar primero quienes han solicitado este animal, y eliminar dichas solicitudes.
+
+    // Guardo el id del animal
+    // Miro en petsInAdoption/:type/:idAnimal/wantedBy
+    // Meto en un array los ids de los usuarios que querían al animal.
     return this.cloud
       .deletePet(this.pet)
       .then(res => {
@@ -98,7 +104,7 @@ export class PetDetailsPage {
         .deleteAdoptPet(this.pet, this.afAuth.auth.currentUser.uid)
         .then(_ => {
           this.presentToast(
-            `Deleted ${this.pet.name} from "My adoptions" tab :(`
+            `Deleted from "My adoptions" tab :(`
           );
         });
     }

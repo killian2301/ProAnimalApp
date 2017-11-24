@@ -11,8 +11,4 @@ export class InterestedUserInfoPage {
     this.user = this.navParams.get('user');
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad InterestedUserInfoPage');
-  }
-
 }

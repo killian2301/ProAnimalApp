@@ -25,7 +25,6 @@ export class RequestUserInfoPage {
   ) {
     this.spinnerDialog.hide();
     this.pet = navParams.get("pet");
-    console.log("displ:", this.afAuth.auth.currentUser.displayName);
     this.userProfile.displayName = this.afAuth.auth.currentUser.displayName;
     this.userProfile.email = this.afAuth.auth.currentUser.email;
   }
@@ -41,7 +40,7 @@ export class RequestUserInfoPage {
         .then(_ => {
           this.cloud
             .showToast(
-              `You will find ${this.pet.name} in your "My adoptions" tab :)`
+              `The owner has been notified! :)`
             )
             .then(_ => this.navCtrl.pop());
         });

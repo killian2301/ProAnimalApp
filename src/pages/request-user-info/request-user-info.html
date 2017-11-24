@@ -9,13 +9,15 @@
 
 <ion-content padding>
   <ion-list>
-    <h3>Hey {{userProfile.displayName}}, let's provide the owner of {{pet.profile.name}} a way to contact you!</h3>
-    <ion-item>
-      <ion-label fixed>Phone:</ion-label>
-      <ion-input [(ngModel)]="userProfile.phone" placeholder="(opcional)" type="phone"></ion-input>
+    <h3>Hey {{userProfile.displayName | shortName}}, let's provide the owner of {{pet.profile.name}} a way to contact you!</h3>
+    <ion-item padding>
+      <ion-input [(ngModel)]="userProfile.phone" placeholder="Phone" type="tel"></ion-input>
+    </ion-item>
+    <ion-item padding>
+      <ion-input [(ngModel)]="userProfile.email" placeholder="Email" type="email"></ion-input>
     </ion-item>
 
   </ion-list>
-  <a (click)="closeModal()">I rather contact by email</a>
   <button ion-button block (click)="sendRequest()">Request Info!</button>
 </ion-content>
+
